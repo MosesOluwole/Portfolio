@@ -1,0 +1,23 @@
+.core {
+  font-family: var(--font-display); font-weight: 600; font-size: var(--t-xl); line-height: 1.05; letter-spacing: -0.03em;
+  font-variation-settings: "wdth" 86; max-width: 22em; margin-bottom: var(--s-6);
+}
+.item { display: inline-block; white-space: nowrap; margin-right: 0.15em; }
+.sep { color: var(--lime-deep); margin-inline: 0.3em; -webkit-text-stroke: 0.5px var(--ink); }
+
+.sheet { width: 100%; border-collapse: collapse; font-size: var(--t-sm); }
+.sheet thead th { text-align: left; font-weight: 600; font-size: var(--t-xs); color: var(--grey); padding: 0 var(--s-2) 0.6rem 0; border-bottom: 1.5px solid var(--ink); }
+.sheet tbody th, .sheet td { text-align: left; vertical-align: top; padding: 1rem var(--s-2) 1rem 0; border-bottom: 1px solid var(--rule); }
+.sheet tbody th { font-family: var(--font-display); font-size: var(--t-md); font-weight: 600; letter-spacing: -0.02em; width: 24%; font-variation-settings: "wdth" 90; line-height: 1.2; }
+.use { color: var(--grey); width: 30%; }
+.sheet tbody tr { transition: background-color 150ms; }
+.sheet tbody tr:hover { background: color-mix(in srgb, var(--lime) 30%, transparent); }
+
+@media (max-width: 720px) {
+  .sheet thead { display: none; }
+  .sheet, .sheet tbody, .sheet tr, .sheet th, .sheet td { display: block; width: 100%; }
+  .sheet tr { padding: 1rem 0; border-bottom: 1px solid var(--rule); }
+  .sheet tbody th, .sheet td { border: 0; padding: 0.15rem 0; }
+  .sheet tbody th { width: auto; }
+  .use { width: auto; }
+}

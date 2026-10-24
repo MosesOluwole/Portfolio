@@ -1,0 +1,47 @@
+.figure { margin: 0; }
+
+.chooser { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: var(--s-2); }
+.chooserLabel { font-size: var(--t-sm); font-weight: 600; }
+.options { display: grid; grid-template-columns: 1fr 1fr; border: 1.5px solid var(--ink); max-width: 34rem; }
+.option {
+  min-height: 44px; padding: 0.55rem 0.9rem; background: transparent; border: 0; cursor: pointer; text-align: left;
+  font-size: var(--t-sm); transition: background-color 150ms var(--ease);
+}
+.option:nth-child(odd) { border-right: 1.5px solid var(--ink); }
+.option:nth-child(-n + 2) { border-bottom: 1.5px solid var(--ink); }
+.option:hover { background: var(--paper-2); }
+.option[aria-pressed="true"] { background: var(--ink); color: var(--lime); }
+
+.canvas { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding-block: var(--s-2); }
+.canvas svg { width: 100%; height: auto; overflow: visible; }
+
+.boundary { fill: none; stroke: var(--grey); stroke-width: 1; stroke-dasharray: 3 4; opacity: 0.6; }
+.anno { font-family: var(--font-mono); font-size: 10.5px; fill: var(--grey); }
+
+.edge { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 400; stroke-dashoffset: 400; animation: draw 900ms var(--ease) 350ms forwards; }
+.edgeOff .edge { stroke: var(--rule); }
+.flow { fill: none; stroke: var(--lime-deep); stroke-width: 3; stroke-dasharray: 6 14; animation: flow 1.6s linear infinite; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes flow { to { stroke-dashoffset: -40; } }
+
+.node rect { stroke: var(--ink); stroke-width: 1.5; transition: fill 250ms var(--ease), opacity 250ms var(--ease); }
+.node text { transition: opacity 250ms var(--ease); }
+.nodeOn rect { fill: var(--lime); }
+.nodeOff rect { fill: var(--paper); stroke: var(--rule); }
+.nodeOff text { opacity: 0.4; }
+.nodeLabel { font-family: var(--font-display); font-weight: 600; font-size: 18px; fill: var(--ink); letter-spacing: -0.02em; }
+.nodeSub { font-family: var(--font-body); font-size: 12px; fill: var(--ink); opacity: 0.75; }
+.nodeOff .nodeSub { opacity: 0.35; }
+
+.fault circle { fill: var(--ink); }
+.fault path { stroke: var(--lime); stroke-width: 1.8; stroke-linecap: round; }
+
+.dim path { fill: none; stroke: var(--grey); stroke-width: 1; }
+.dim text { paint-order: stroke; stroke: var(--paper); stroke-width: 6px; }
+
+.caption { margin-top: var(--s-2); font-size: var(--t-sm); max-width: 52ch; min-height: 3.2em; }
+
+@media (prefers-reduced-motion: reduce) {
+  .edge { stroke-dashoffset: 0; animation: none; }
+  .flow { animation: none; stroke-dasharray: none; stroke-width: 2.5; }
+}

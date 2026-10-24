@@ -1,0 +1,68 @@
+.hero {
+  position: relative;
+  padding-block: clamp(2rem, 1rem + 3vw, 4rem) clamp(4rem, 2rem + 5vw, 7rem);
+  border-bottom: 1px solid var(--rule);
+  /* drafting paper: faint 32px grid */
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--ink) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--ink) 5%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+}
+.inner {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--s-3);
+  grid-template-areas:
+    "status status status status status status status status status status status status"
+    "title  title  title  title  title  title  title  title  title  title  title  title"
+    "copy   copy   copy   copy   copy   .      diag   diag   diag   diag   diag   diag";
+}
+.status { grid-area: status; display: flex; align-items: center; gap: 0.6rem; font-size: var(--t-sm); color: var(--grey); margin-bottom: clamp(1.5rem, 1rem + 2vw, 2.75rem); }
+.dot { width: 9px; height: 9px; background: var(--lime-deep); border: 1.5px solid var(--ink); flex: none; }
+
+.title {
+  grid-area: title;
+  font-size: var(--t-3xl);
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.032em;
+  font-variation-settings: "wdth" 84, "opsz" 96;
+}
+.line { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.line > span { display: inline-block; animation: rise 900ms var(--ease) both; }
+.line:nth-child(2) > span { animation-delay: 90ms; }
+.line:nth-child(3) > span { animation-delay: 180ms; }
+@keyframes rise { from { transform: translateY(105%); } }
+
+.copy { grid-area: copy; margin-top: clamp(2rem, 1rem + 3vw, 3.5rem); }
+.diagram { grid-area: diag; margin-top: clamp(2rem, 1rem + 3vw, 3.5rem); }
+
+.lede { font-family: var(--font-display); font-size: var(--t-lg); line-height: 1.12; letter-spacing: -0.02em; font-weight: 500; font-variation-settings: "wdth" 92; max-width: 22ch; }
+.body { margin-top: var(--s-2); color: var(--grey); max-width: 40ch; }
+.ctas { display: flex; flex-wrap: wrap; gap: var(--s-1); margin-top: var(--s-4); }
+
+/* Wide screens: headline and diagram side by side so the whole
+   proposition sits in the first view. */
+@media (min-width: 1200px) {
+  .inner {
+    grid-template-areas:
+      "status status status status status status status status status status status status"
+      "title  title  title  title  title  title  title  diag   diag   diag   diag   diag"
+      "copy   copy   copy   copy   copy   .      .      diag   diag   diag   diag   diag";
+    grid-template-rows: auto auto 1fr;
+  }
+  .title { font-size: clamp(5rem, 1rem + 5.6vw, 8.5rem); }
+  .diagram { margin-top: 0.5rem; }
+}
+@media (max-width: 1199px) and (min-width: 861px) {
+  .inner {
+    grid-template-areas:
+      "status status status status status status status status status status status status"
+      "title  title  title  title  title  title  title  title  title  title  title  title"
+      "copy   copy   copy   copy   copy   diag   diag   diag   diag   diag   diag   diag";
+  }
+}
+@media (max-width: 860px) {
+  .inner { grid-template-areas: "status" "title" "copy" "diag"; grid-template-columns: minmax(0, 1fr); }
+}

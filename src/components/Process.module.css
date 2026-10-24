@@ -1,0 +1,27 @@
+.track { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--s-3); position: relative; counter-reset: none; }
+.track::before { content: ""; position: absolute; left: 0; right: 0; top: 22px; height: 1.5px; background: var(--rule-ink); }
+.stage { position: relative; padding-right: var(--s-2); }
+.marker { position: relative; display: flex; align-items: center; height: 44px; margin-bottom: var(--s-3); }
+.marker span { display: grid; place-items: center; width: 44px; height: 44px; background: var(--ink); border: 1.5px solid var(--paper); font-family: var(--font-display); font-weight: 600; font-size: var(--t-sm); }
+.stage:first-child .marker span { background: var(--lime); color: var(--ink); border-color: var(--lime); }
+.name { font-size: var(--t-xl); margin-bottom: var(--s-2); }
+.text { color: var(--grey-on-ink); font-size: var(--t-sm); max-width: 32ch; }
+.you { margin-top: var(--s-3); padding-top: 0.75rem; border-top: 1px solid var(--rule-ink); font-size: var(--t-sm); display: grid; gap: 0.2rem; max-width: 32ch; }
+.you span { font-size: var(--t-xs); color: var(--lime); font-weight: 600; }
+
+.principles { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--s-3); margin-top: var(--s-7); padding-top: var(--s-3); border-top: 1.5px solid var(--paper); font-family: var(--font-display); font-size: var(--t-lg); line-height: 1.15; letter-spacing: -0.02em; font-variation-settings: "wdth" 90; }
+.principles p:first-child { grid-column: 1 / span 6; }
+.principles p:last-child { grid-column: 8 / -1; color: var(--grey-on-ink); }
+
+@media (max-width: 960px) {
+  .track { grid-template-columns: 1fr 1fr; row-gap: var(--s-6); }
+  .track::before { display: none; }
+}
+@media (max-width: 600px) {
+  .track { grid-template-columns: 1fr; row-gap: var(--s-5); padding-left: 0; }
+  .stage { padding-left: 64px; padding-right: 0; }
+  .marker { position: absolute; left: 0; top: 0; margin: 0; }
+  .stage:not(:last-child)::after { content: ""; position: absolute; left: 22px; top: 52px; bottom: calc(-1 * var(--s-5) + 8px); width: 1.5px; background: var(--rule-ink); }
+  .principles p:first-child, .principles p:last-child { grid-column: 1 / -1; }
+  .principles p:last-child { margin-top: var(--s-2); }
+}

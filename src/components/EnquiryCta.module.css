@@ -1,0 +1,4 @@
+.cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); padding: var(--s-4); background: var(--lime); border: 1.5px solid var(--ink); }
+.text { font-family: var(--font-display); font-size: var(--t-xl); font-weight: 600; letter-spacing: -0.03em; line-height: 1; font-variation-settings: "wdth" 85; }
+.cta :global(.btn-primary) { background: var(--ink); color: var(--lime); }
+.cta :global(.btn-primary:hover) { background: var(--paper); color: var(--ink); }

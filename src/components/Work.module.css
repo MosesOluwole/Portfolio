@@ -1,0 +1,63 @@
+.work { position: relative; }
+
+/* A — dark spread */
+.spread { background: var(--ink); color: var(--paper); padding-block: clamp(3.5rem, 2rem + 5vw, 7rem); }
+.spreadGrid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--s-3); row-gap: var(--s-5); align-items: center; }
+.spreadText { grid-column: 1 / span 5; }
+.spreadVisual { grid-column: 7 / -1; }
+.kicker { font-size: var(--t-sm); color: var(--lime); font-weight: 600; margin-bottom: var(--s-2); }
+.bigName { font-size: var(--t-3xl); line-height: 0.85; letter-spacing: -0.035em; font-variation-settings: "wdth" 84, "opsz" 96; }
+.summary { margin-top: var(--s-3); font-size: var(--t-md); line-height: 1.45; max-width: 34ch; }
+.meta { display: flex; gap: var(--s-4); margin: var(--s-3) 0 var(--s-2); padding-top: var(--s-2); border-top: 1px solid var(--rule-ink); }
+.meta dt { font-size: var(--t-xs); color: var(--grey-on-ink); }
+.meta dd { margin: 0.2rem 0 0; font-weight: 600; }
+.actions { display: flex; flex-wrap: wrap; gap: var(--s-1); margin-top: var(--s-4); }
+@media (max-width: 960px) { .spreadText, .spreadVisual { grid-column: 1 / -1; } }
+
+/* group headings inside the section */
+.groupHead { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--s-3); row-gap: var(--s-1); margin-bottom: var(--s-5); padding-top: var(--s-2); border-top: 1.5px solid var(--ink); }
+.groupTitle { grid-column: 1 / span 5; font-size: var(--t-xl); }
+.groupNote { grid-column: 7 / -1; color: var(--grey); max-width: 52ch; align-self: end; }
+@media (max-width: 820px) { .groupTitle, .groupNote { grid-column: 1 / -1; } }
+
+/* B — asymmetric pair */
+.pair { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--s-3); row-gap: var(--s-6); }
+.pairMain { grid-column: 1 / span 7; }
+.pairSide { grid-column: 9 / -1; margin-top: clamp(0rem, -4rem + 14vw, 9rem); }
+.pairText { margin-top: var(--s-3); display: grid; gap: 0.75rem; max-width: 46ch; }
+.industry { font-size: var(--t-sm); color: var(--grey); }
+.midName { font-size: var(--t-xl); }
+.links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: 0.25rem; font-size: var(--t-sm); }
+@media (max-width: 860px) { .pairMain, .pairSide { grid-column: 1 / -1; margin-top: 0; } }
+
+/* C — index */
+.indexBand { background: var(--paper-2); }
+.index { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.55fr); column-gap: var(--s-5); align-items: start; }
+.indexHeader, .indexRow { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) 7.5rem; column-gap: var(--s-3); align-items: baseline; }
+.indexHeader { grid-column: 1; font-size: var(--t-xs); color: var(--grey); padding-bottom: 0.6rem; border-bottom: 1.5px solid var(--ink); }
+.indexList { grid-column: 1; list-style: none; }
+.indexRow { padding: 1.1rem 0; border-bottom: 1px solid var(--rule); position: relative; transition: padding-left 220ms var(--ease); }
+.indexRow::before { content: ""; position: absolute; left: 0; top: 50%; width: 0; height: 3px; background: var(--ink); transform: translateY(-50%); transition: width 220ms var(--ease); }
+.indexRowOn { padding-left: 1.75rem; }
+.indexRowOn::before { width: 1rem; }
+.indexName { font-family: var(--font-display); font-size: var(--t-lg); font-weight: 600; letter-spacing: -0.03em; text-decoration: none; font-variation-settings: "wdth" 85; }
+.indexName:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+.indexRole, .indexStack { font-size: var(--t-sm); color: var(--grey); }
+.indexLive { font-size: var(--t-sm); font-weight: 600; justify-self: end; }
+.preview { grid-column: 2; grid-row: 1 / span 2; position: sticky; top: calc(var(--header-h) + 2rem); }
+.previewNote { margin-top: 0.6rem; font-size: var(--t-xs); color: var(--grey); }
+
+@media (max-width: 1080px) {
+  .index { grid-template-columns: 1fr; }
+  .preview { display: none; }
+}
+@media (max-width: 720px) {
+  .indexHeader { display: none; }
+  .indexRow { grid-template-columns: 1fr auto; row-gap: 0.25rem; }
+  .indexLive { justify-self: end; }
+  .indexName { grid-column: 1; }
+  .indexLive { grid-column: 2; grid-row: 1; }
+  .indexRole, .indexStack { grid-column: 1 / -1; }
+  .indexRowOn { padding-left: 0; }
+  .indexRowOn::before { width: 0; }
+}

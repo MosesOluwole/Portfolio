@@ -1,0 +1,20 @@
+.about { background: var(--paper-2); }
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--s-3); row-gap: var(--s-5); align-items: start; }
+.head { grid-column: 1 / -1; }
+.label { font-size: var(--t-sm); color: var(--grey); border-top: 1px solid currentColor; padding-top: 0.6rem; margin-bottom: var(--s-3); max-width: calc(25% - var(--s-3)); }
+.title { font-size: var(--t-2xl); }
+.text { grid-column: 1 / span 6; display: grid; gap: var(--s-2); max-width: 60ch; }
+.lead { font-family: var(--font-display); font-size: var(--t-lg); line-height: 1.15; letter-spacing: -0.02em; font-weight: 500; font-variation-settings: "wdth" 90; }
+.card { grid-column: 9 / -1; border: 1.5px solid var(--ink); background: var(--paper); }
+.photo { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-bottom: 1.5px solid var(--ink); }
+.monogram {
+  aspect-ratio: 4 / 3; display: grid; place-items: center; background: var(--ink); color: var(--lime);
+  font-family: var(--font-display); font-weight: 700; font-size: clamp(5rem, 3rem + 6vw, 9rem); letter-spacing: -0.06em; font-variation-settings: "wdth" 84;
+}
+.facts { margin: 0; }
+.facts div { display: grid; grid-template-columns: 7.5rem 1fr; gap: var(--s-2); padding: 0.85rem 1rem; border-top: 1px solid var(--rule); font-size: var(--t-sm); }
+.facts div:first-child { border-top: 0; }
+.facts dt { color: var(--grey); }
+.facts dd { margin: 0; font-weight: 500; }
+@media (max-width: 960px) { .text { grid-column: 1 / span 7; } .card { grid-column: 8 / -1; } }
+@media (max-width: 760px) { .text, .card { grid-column: 1 / -1; } .label { max-width: none; } }
