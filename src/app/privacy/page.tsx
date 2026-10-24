@@ -6,9 +6,9 @@ import s from "./privacy.module.css";
 
 export const metadata: Metadata = {
   title: "Privacy notice",
-  description: `How ${site.name} handles personal information sent through this website.`,
+  description: `How ${site.name}, a freelance software engineer in London, handles personal information sent through this website and its enquiry form.`,
   alternates: { canonical: "/privacy" },
-  openGraph: { url: "/privacy", title: "Privacy notice", description: `How ${site.name} handles personal information sent through this website.` },
+  openGraph: { images: ["/opengraph-image"], url: "/privacy", title: "Privacy notice", description: `How ${site.name} handles personal information sent through this website.` },
 };
 
 const fmt = (iso: string) =>
@@ -17,6 +17,7 @@ const fmt = (iso: string) =>
 export default function Privacy() {
   const p = site.privacy;
   const usesResend = enquiryApiConfigured();
+  const usesAnalytics = process.env.NEXT_PUBLIC_ANALYTICS === "vercel";
   const contact = site.email ? (
     <a href={`mailto:${site.email}`} className="textlink">{site.email}</a>
   ) : (
@@ -30,7 +31,7 @@ export default function Privacy() {
         <p className={s.lede}>
           This explains what happens to the information you send me through this website. The short version: I use
           it to reply to you and talk about your project, nothing else. There are no cookies, no analytics and no
-          tracking on this site.
+          tracking on this site{usesAnalytics ? ", apart from anonymous visit statistics that don't use cookies" : ""}.
         </p>
         <p className={s.updated}>Last updated {fmt(p.lastUpdated)}</p>
       </header>
@@ -100,6 +101,13 @@ export default function Privacy() {
             <ul className={s.list}>
               <li><strong>{p.hostingProvider}</strong> hosts this website and its technical logs.</li>
               <li><strong>{p.emailProvider}</strong> provides the inbox where enquiries arrive.</li>
+              {usesAnalytics && (
+                <li>
+                  <strong>Vercel Web Analytics</strong> counts page visits and clicks on contact links, so I can see which
+                  pages are useful. It doesn&rsquo;t use cookies, doesn&rsquo;t store anything on your device and
+                  doesn&rsquo;t identify you or follow you across other websites.
+                </li>
+              )}
               {usesResend && (
                 <li><strong>Resend</strong> delivers enquiry form submissions to my inbox by email.</li>
               )}
@@ -137,8 +145,9 @@ export default function Privacy() {
           <div>
             <p>
               This site doesn&rsquo;t use cookies, doesn&rsquo;t store anything else on your device, and doesn&rsquo;t
-              load fonts, scripts or trackers from other companies. That&rsquo;s why you haven&rsquo;t seen a cookie
-              banner. If that ever changes, this notice will be updated first.
+              load fonts or trackers from other companies.
+              {usesAnalytics && " Visit statistics are collected without cookies, as described above."} That&rsquo;s
+              why you haven&rsquo;t seen a cookie banner. If that ever changes, this notice will be updated first.
             </p>
             <p>
               Links to live projects take you to other websites, which have their own privacy policies.

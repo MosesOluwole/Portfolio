@@ -1,5 +1,7 @@
 import { services } from "@/content/services";
+import Link from "next/link";
 import EnquiryLink from "./EnquiryLink";
+import { servicePageFor } from "@/content/servicePages";
 import s from "./Services.module.css";
 
 export default function Services() {
@@ -42,6 +44,13 @@ export default function Services() {
                       {sv.nextStep}{" "}
                       <EnquiryLink type={sv.enquiryType} className="textlink">Start an enquiry</EnquiryLink>
                     </p>
+                    {servicePageFor(sv.id) && (
+                      <p style={{ marginTop: "1rem" }}>
+                        <Link href={`/services/${servicePageFor(sv.id)!.slug}`} className="textlink">
+                          More about {servicePageFor(sv.id)!.name.toLowerCase()}
+                        </Link>
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

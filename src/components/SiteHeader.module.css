@@ -53,7 +53,7 @@
   .menuBtn { display: inline-block; }
 }
 @media (max-width: 420px) {
-  .name { display: none; }
+  .name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .cta { padding-inline: 0.75rem; }
 }
 @media (min-width: 961px) { .panel { display: none !important; } }

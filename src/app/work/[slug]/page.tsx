@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { getProject, projects } from "@/content/projects";
 import ProjectVisual from "@/components/visuals/ProjectVisual";
 import EnquiryCta from "@/components/EnquiryCta";
+import { getServicePage } from "@/content/servicePages";
+import { breadcrumbs, JsonLd } from "@/lib/schema";
 import s from "./case.module.css";
 
 type Params = { slug: string };
@@ -16,9 +18,14 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { slug } = await params;
   const p = getProject(slug);
   if (!p) return {};
-  const title = `${p.name} case study`;
-  const description = `${p.summary} My role: ${p.role} (${p.team.toLowerCase()}).`;
-  return { title, description, alternates: { canonical: `/work/${p.slug}` }, openGraph: { title, description, url: `/work/${p.slug}` } };
+  const url = `/work/${p.slug}`;
+  return {
+    title: p.metaTitle,
+    description: p.metaDescription,
+    alternates: { canonical: url },
+    openGraph: { type: "article", url, title: p.metaTitle, description: p.metaDescription },
+    twitter: { title: p.metaTitle, description: p.metaDescription },
+  };
 }
 
 const isDev = process.env.NODE_ENV !== "production";
@@ -38,8 +45,9 @@ export default async function CaseStudy({ params }: { params: Promise<Params> })
 
   return (
     <article className={s.page}>
+      <JsonLd data={breadcrumbs([{ name: "Home", path: "/" }, { name: `${p.name} case study`, path: `/work/${p.slug}` }])} />
       <header className={`wrap ${s.head}`}>
-        <p className={s.crumb}><Link href="/#work">Selected work</Link> / {p.name}</p>
+        <nav aria-label="Breadcrumb" className={s.crumb}><Link href="/">Home</Link> / <Link href="/#work">Selected work</Link> / <span aria-current="page">{p.name}</span></nav>
         <h1 className={s.title}>{p.name}</h1>
         <dl className={s.meta}>
           <div><dt>Industry</dt><dd>{p.industry}</dd></div>
@@ -49,7 +57,7 @@ export default async function CaseStudy({ params }: { params: Promise<Params> })
             <dt>{p.brands ? "Live products" : "Live product"}</dt>
             <dd className={p.brands ? s.brandLinks : undefined}>
               {(p.brands ?? [{ name: p.name, url: p.liveUrl, label: p.liveLabel }]).map((b) => (
-                <a key={b.url} href={b.url} target="_blank" rel="noopener noreferrer" className="textlink">
+                <a key={b.url} href={b.url} target="_blank" rel={p.brands ? "nofollow noopener noreferrer" : "noopener noreferrer"} className="textlink">
                   {b.label}<span className="visually-hidden"> (opens in a new tab)</span>
                 </a>
               ))}
@@ -72,6 +80,7 @@ export default async function CaseStudy({ params }: { params: Promise<Params> })
             {p.brands ? p.brands.map((b) => b.name).join(", ") : p.name} {p.brands ? "are" : "is"} built and run by a
             wider team and owned by {p.brands ? "their" : "its"} operator. This page describes my own contribution as a
             member of the senior engineering team, not the platform as a whole.
+            {p.brands ? " The live sites are only available in some countries." : ""}
           </p>
         )}
 
@@ -111,6 +120,17 @@ export default async function CaseStudy({ params }: { params: Promise<Params> })
       </div>
 
       <div className={`wrap ${s.foot}`}>
+        {p.relatedServices.length > 0 && (
+          <section className={s.related} aria-labelledby="h-related">
+            <h2 id="h-related">Related services</h2>
+            <ul>
+              {p.relatedServices.map((r) => {
+                const sp = getServicePage(r);
+                return sp ? <li key={r}><Link href={`/services/${sp.slug}`}>{sp.name}</Link></li> : null;
+              })}
+            </ul>
+          </section>
+        )}
         <EnquiryCta />
         <p className={s.next}>
           <span>Next project</span>

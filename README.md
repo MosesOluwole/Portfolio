@@ -57,12 +57,19 @@ create an API key, then copy `.env.example` to `.env.local` (or set the
 variables in your host) and fill in the three values. Rebuild after
 changing them — the mode is decided at build time.
 
+## SEO
+
+See `docs/SEO.md` for the audit, keyword-to-page map, metadata, test
+results, launch checklist and 90-day plan. Service pages live in
+`src/content/servicePages.ts`.
+
 ## Deploy (Vercel)
 
 1. Push the folder to a GitHub repository.
 2. Import it at vercel.com/new (framework is detected automatically).
-3. Add environment variables: `NEXT_PUBLIC_SITE_URL` (your final domain)
-   and, for the form, the three Resend variables.
+3. Add environment variables: `NEXT_PUBLIC_SITE_URL` (your final domain,
+   with https://) and, for the form, the three Resend variables. Optional:
+   `NEXT_PUBLIC_ANALYTICS=vercel`.
 4. Deploy, then add your custom domain in Project → Settings → Domains.
 
 Any Node host works too: `npm run build && npm start`.

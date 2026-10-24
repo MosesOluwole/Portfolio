@@ -32,9 +32,9 @@ export const servicePages: ServicePage[] = [
     slug: "web-application-development",
     serviceId: "web-apps",
     name: "Custom web application development",
-    metaTitle: "Custom Web Application Development for UK Businesses",
+    metaTitle: "Custom Web Application Development, UK",
     metaDescription:
-      "Bespoke web applications built around how your business works: customer portals, booking and application systems, dashboards and admin areas. Freelance developer in London.",
+      "Bespoke web applications built around how your business works: customer portals, application and booking systems, dashboards and admin areas.",
     h1: "Custom web applications, built around how your business actually works",
     intro: [
       "Off-the-shelf software is built for the average business. If yours has a process that doesn't quite fit — the way you take bookings, handle applications, manage customers or report on your numbers — a custom web application can do exactly what you need, and nothing you don't.",
@@ -73,9 +73,9 @@ export const servicePages: ServicePage[] = [
     slug: "api-development",
     serviceId: "backend",
     name: "Backend and API development",
-    metaTitle: "Backend & API Development — Freelance Backend Developer, UK",
+    metaTitle: "Backend & API Development, UK",
     metaDescription:
-      "REST APIs, backend services, databases and background jobs designed to be reliable and easy to extend. Freelance backend developer in London with Node.js, NestJS, Go and PHP experience.",
+      "REST APIs, backend services, databases and background jobs built to be reliable and easy to extend, by a London-based freelance backend developer.",
     h1: "Backend systems and APIs that keep working as you grow",
     intro: [
       "The back end is the part of your software nobody sees and everybody depends on: the business rules, the data, and the APIs that your website, app and other systems talk to. When it's designed well, adding features is straightforward. When it isn't, every change becomes slow and risky.",
@@ -114,9 +114,9 @@ export const servicePages: ServicePage[] = [
     slug: "mvp-development",
     serviceId: "mvp",
     name: "MVP development for startups",
-    metaTitle: "MVP Development for Startups and Founders — UK Freelance Developer",
+    metaTitle: "MVP Development for Startups and Founders",
     metaDescription:
-      "Turn your idea into a working first version real users can try. Help scoping the smallest useful MVP, then a properly built product that can grow. Freelance developer in London.",
+      "Turn your idea into a working first version real users can try: help scoping the smallest useful MVP, then a properly built product that can grow.",
     h1: "MVP development: a first version real users can try",
     intro: [
       "The point of a minimum viable product is to learn whether your idea works, as quickly and cheaply as you responsibly can. That means building the smallest version that delivers real value — and building it well enough that you can keep it if the idea takes off, rather than starting again.",
@@ -153,9 +153,9 @@ export const servicePages: ServicePage[] = [
     slug: "systems-integration",
     serviceId: "automation",
     name: "Business automation and systems integration",
-    metaTitle: "Business Automation & Systems Integration — Freelance Developer UK",
+    metaTitle: "Business Automation & Systems Integration",
     metaDescription:
-      "Connect the software your business already uses and automate the repetitive work between it. API integrations, automated workflows and notifications by a London-based developer.",
+      "Connect the software your business already uses and automate the repetitive work in between: API integrations, workflows and notifications.",
     h1: "Connect your systems and stop doing the same work twice",
     intro: [
       "Most businesses don't need more software. They need the software they already have to talk to each other. When your website, CRM, accounting tool and spreadsheets don't share data, people end up copying it between them by hand — slowly, and with mistakes.",
@@ -192,9 +192,9 @@ export const servicePages: ServicePage[] = [
     slug: "software-maintenance",
     serviceId: "improvements",
     name: "Software maintenance and bug fixing",
-    metaTitle: "Website & Application Maintenance, Bug Fixing and Improvements — UK",
+    metaTitle: "Website & App Maintenance and Bug Fixing",
     metaDescription:
-      "Fix bugs, speed up slow pages and extend existing websites and web applications — including ones another developer built. Experienced freelance engineer in London.",
+      "Fix bugs, speed up slow pages and extend existing websites and web applications, including ones another developer built. London-based engineer.",
     h1: "Fixing, improving and looking after existing software",
     intro: [
       "Plenty of businesses have software that mostly works, but is slow, has bugs nobody has got round to fixing, or is hard to change because the original developer has moved on. Starting again is rarely the answer. Understanding what's there and improving it usually is.",

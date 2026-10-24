@@ -50,11 +50,23 @@ export type Project = {
   brands?: { name: string; url: string; label: string; tone: Tone }[];
   /** Two or three headline pieces of work, shown in the Selected work section. */
   highlights?: string[];
+  /** Search title and description for the case-study page. */
+  metaTitle: string;
+  metaDescription: string;
+  /** Slugs from servicePages.ts this project is evidence for. */
+  relatedServices: string[];
+  /** ISO date the case study last changed (sitemap). */
+  updated: string;
 };
 
 export const projects: Project[] = [
   {
     slug: "aligncv",
+    metaTitle: "AlignCV Case Study: CV-Tailoring SaaS",
+    metaDescription:
+      "How I built AlignCV single-handed in Next.js and NestJS: CV parsing, a structured match score, AI rewriting with a provenance check, and DOCX/PDF export.",
+    relatedServices: ["mvp-development", "web-application-development", "api-development"],
+    updated: "2026-10-24",
     name: "AlignCV",
     group: "independent",
     industry: "Careers software",
@@ -102,6 +114,11 @@ export const projects: Project[] = [
   },
   {
     slug: "dhub-education",
+    metaTitle: "DHUB Education Website Case Study",
+    metaDescription:
+      "Building DHUB Education's first website as sole developer: course pages, student registration and applications, a content management area and email alerts.",
+    relatedServices: ["web-application-development", "api-development"],
+    updated: "2026-10-24",
     name: "DHUB Education",
     group: "sole",
     industry: "Education",
@@ -137,6 +154,11 @@ export const projects: Project[] = [
   },
   {
     slug: "jordan-care",
+    metaTitle: "Jordan Care Website Case Study",
+    metaDescription:
+      "Building Jordan Care's first website as sole developer: care service pages, enquiry and appointment request forms, an admin area and email notifications.",
+    relatedServices: ["web-application-development", "software-maintenance"],
+    updated: "2026-10-24",
     name: "Jordan Care",
     group: "sole",
     industry: "Health and social care",
@@ -172,6 +194,11 @@ export const projects: Project[] = [
   },
   {
     slug: "casino-platforms",
+    metaTitle: "Wildz, Wheelz, Caxino & Spinz Case Study",
+    metaDescription:
+      "Senior developer on four live casino brands sharing one platform: an automated content translation workflow, sportsbook integration and production fixes.",
+    relatedServices: ["systems-integration", "api-development", "software-maintenance"],
+    updated: "2026-10-24",
     name: "Commercial casino platforms",
     group: "team",
     industry: "Online gaming",

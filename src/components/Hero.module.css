@@ -27,7 +27,7 @@
   font-weight: 600;
   line-height: 0.9;
   letter-spacing: -0.032em;
-  font-variation-settings: "wdth" 84, "opsz" 96;
+  font-variation-settings: "wdth" 84;
 }
 .kicker {
   display: block; margin-bottom: clamp(0.75rem, 0.5rem + 1vw, 1.25rem);

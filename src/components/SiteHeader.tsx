@@ -77,9 +77,10 @@ export default function SiteHeader() {
     <>
     <header className={`${s.header} ${scrolled ? s.scrolled : ""}`}>
       <div className={`wrap ${s.inner}`}>
-        <Link href="/" className={s.wordmark} aria-label={`${site.name}, home`}>
+        <Link href="/" className={s.wordmark}>
           <span className={s.mono} aria-hidden="true">{site.monogram}</span>
           <span className={s.name}>{site.wordmark}</span>
+          <span className="visually-hidden">, home</span>
         </Link>
 
         <nav aria-label="Main" className={s.nav}>

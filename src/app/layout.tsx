@@ -5,13 +5,14 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import ConfigNotice from "@/components/ConfigNotice";
 import { JsonLd, siteGraph } from "@/lib/schema";
+import AnalyticsProvider from "@/components/AnalyticsProvider";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
   variable: "--font-bricolage",
   display: "swap",
-  axes: ["wdth", "opsz"],
+  axes: ["wdth"],
 });
 const plex = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -24,11 +25,12 @@ const plexMono = IBM_Plex_Mono({
   weight: ["400"],
   variable: "--font-plex-mono",
   display: "swap",
+  preload: false, // only used for small diagram labels
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: { default: site.seo.title, template: `%s — ${site.name}` },
+  title: { default: site.seo.title, template: `%s | ${site.name}` },
   description: site.seo.description,
   applicationName: site.name,
   authors: [{ name: site.name, url: siteUrl }],
@@ -57,6 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main">{children}</main>
         <SiteFooter />
         <JsonLd data={siteGraph()} />
+        <AnalyticsProvider />
       </body>
     </html>
   );

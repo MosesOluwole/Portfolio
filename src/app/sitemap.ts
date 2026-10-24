@@ -1,12 +1,15 @@
 import type { MetadataRoute } from "next";
 import { projects } from "@/content/projects";
-import { siteUrl } from "@/content/site";
+import { servicePages } from "@/content/servicePages";
+import { site, siteUrl } from "@/content/site";
 
+/** Only canonical, indexable URLs. lastModified reflects real content changes. */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
+  const home = "2026-10-24";
   return [
-    { url: `${siteUrl}/`, lastModified: now, changeFrequency: "monthly", priority: 1 },
-    { url: `${siteUrl}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
-    ...projects.map((p) => ({ url: `${siteUrl}/work/${p.slug}`, lastModified: now, changeFrequency: "yearly" as const, priority: 0.7 })),
+    { url: `${siteUrl}/`, lastModified: home },
+    ...servicePages.map((p) => ({ url: `${siteUrl}/services/${p.slug}`, lastModified: p.updated })),
+    ...projects.map((p) => ({ url: `${siteUrl}/work/${p.slug}`, lastModified: p.updated })),
+    { url: `${siteUrl}/privacy`, lastModified: site.privacy.lastUpdated },
   ];
 }

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { site } from "@/content/site";
+import { servicePages } from "@/content/servicePages";
 import s from "./SiteFooter.module.css";
 
 const sections = [
@@ -31,6 +32,10 @@ export default function SiteFooter() {
         <nav aria-label="Footer" className={s.col}>
           <h2 className={s.h}>On this site</h2>
           <ul>{sections.map((l) => <li key={l.id}><Link href={`/#${l.id}`}>{l.label}</Link></li>)}</ul>
+        </nav>
+        <nav aria-label="Services" className={s.col}>
+          <h2 className={s.h}>Services</h2>
+          <ul>{servicePages.map((sp) => <li key={sp.slug}><Link href={`/services/${sp.slug}`}>{sp.name}</Link></li>)}</ul>
         </nav>
         {(site.email || elsewhere.length > 0) && (
           <div className={s.col}>

@@ -4,7 +4,7 @@
 .formCol { grid-column: 7 / -1; }
 @media (max-width: 960px) { .intro, .formCol { grid-column: 1 / -1; } }
 
-.title { font-size: var(--t-2xl); line-height: 0.92; letter-spacing: -0.04em; font-variation-settings: "wdth" 84, "opsz" 96; }
+.title { font-size: var(--t-2xl); line-height: 0.92; letter-spacing: -0.04em; font-variation-settings: "wdth" 84; }
 .title::after { content: ""; display: block; width: 4.5rem; height: 6px; background: var(--lime); margin-top: var(--s-3); transform-origin: left; animation: grow 1.2s var(--ease) 200ms both; }
 @keyframes grow { from { transform: scaleX(0); } }
 .lede { margin-top: var(--s-3); font-size: var(--t-md); line-height: 1.45; color: var(--grey-on-ink); max-width: 36ch; }

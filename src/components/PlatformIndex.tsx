@@ -42,13 +42,16 @@ export default function PlatformIndex({ project }: { project: Project }) {
               onMouseEnter={() => setActive(i)}
             >
               <span className={s.brandName}>{b.name}</span>
-              <a href={b.url} target="_blank" rel="noopener noreferrer" className={s.indexLive} onFocus={() => setActive(i)}>
+              <a href={b.url} target="_blank" rel="nofollow noopener noreferrer" className={s.indexLive} onFocus={() => setActive(i)}>
                 {b.label}<span className="visually-hidden"> (opens in a new tab)</span>
               </a>
             </li>
           ))}
         </ul>
-        <p className={s.previewNote}>Abstract illustrations, not the products&rsquo; interfaces</p>
+        <p className={s.previewNote}>
+          Abstract illustrations, not the products&rsquo; interfaces. The live sites are only available in some
+          countries.
+        </p>
       </div>
     </div>
   );

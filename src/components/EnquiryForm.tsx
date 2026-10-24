@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { budgets, projectTypes, timeframes } from "@/content/enquiry";
 import { validateEnquiry, type Enquiry, type FieldErrors } from "@/lib/enquiry";
+import { track } from "@/lib/analytics";
 import s from "./Contact.module.css";
 
 type Mode = "api" | "mailto" | "none";
@@ -24,6 +25,8 @@ export default function EnquiryForm({ mode, email }: { mode: Mode; email: string
       if (projectTypes.includes(t)) setValues((v) => ({ ...v, type: t }));
     };
     window.addEventListener("enquiry:type", onType);
+    const fromUrl = new URLSearchParams(window.location.search).get("enquiry-type");
+    if (fromUrl && projectTypes.includes(fromUrl)) setValues((v) => ({ ...v, type: fromUrl }));
     return () => window.removeEventListener("enquiry:type", onType);
   }, []);
 
@@ -48,6 +51,7 @@ export default function EnquiryForm({ mode, email }: { mode: Mode; email: string
         `Project type: ${values.type}`, `Budget: ${values.budget}`, `Timeframe: ${values.timeframe}`,
         "", values.description,
       ].join("\n");
+      track("enquiry_email", { type: values.type, budget: values.budget });
       window.location.href = `mailto:${email}?subject=${encodeURIComponent(`Project enquiry: ${values.type}`)}&body=${encodeURIComponent(body)}`;
       setStatus("sent");
       setMessage("Your email app should now be open with the enquiry filled in. Press send there to deliver it.");
@@ -65,6 +69,7 @@ export default function EnquiryForm({ mode, email }: { mode: Mode; email: string
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok) {
+        track("enquiry_sent", { type: values.type, budget: values.budget });
         setStatus("sent");
         setMessage("Thanks — your enquiry has been sent. I'll reply to the email address you gave.");
         setValues(empty);
