@@ -16,6 +16,8 @@
 
 export type ProjectGroup = "independent" | "sole" | "team";
 
+export type Tone = { base: string; tile: string; mark: string };
+
 export type Project = {
   slug: string;
   name: string;
@@ -42,8 +44,12 @@ export type Project = {
   screenshot: string | null;
   /** Which illustrative composition to render when there is no screenshot. */
   visual: "aligncv" | "dhub" | "jordan" | "platform";
-  /** Tone used by the platform visual so the four gaming entries differ. */
-  tone?: { base: string; tile: string; mark: string };
+  /** Tone used by the platform visual. */
+  tone?: Tone;
+  /** For one case study covering several live products (e.g. sister brands). */
+  brands?: { name: string; url: string; label: string; tone: Tone }[];
+  /** Two or three headline pieces of work, shown in the Selected work section. */
+  highlights?: string[];
 };
 
 export const projects: Project[] = [
@@ -100,23 +106,32 @@ export const projects: Project[] = [
     group: "sole",
     industry: "Education",
     summary:
-      "The website for an education consultancy that guides students through studying abroad, from course discovery to applications.",
+      "The first website for an education consultancy: course pages, online student registration and applications, and a content area the team manages themselves.",
     role: "Full-stack software developer",
     team: "Sole developer",
     liveUrl: "https://dhubeducation.com/",
     liveLabel: "dhubeducation.com",
     technologies: ["JavaScript", "PHP", "HTML5", "Tailwind CSS", "Bootstrap"],
     overview:
-      "DHUB Education presents international study guidance, student application support and course discovery online, giving prospective students a clear route into the consultancy's services.",
-    challenge: null,
+      "DHUB Education helps students explore and apply for study opportunities, including international study. Before this project the organisation had no website; I built its first one from the ground up.",
+    challenge:
+      "The consultancy needed more than a brochure site. Students had to be able to find courses, register, apply and send enquiries online, and the team needed to keep course and page content up to date without calling a developer for every change. I was the only developer, responsible for every part of it.",
     contribution: [
-      "Designed and built the website independently, owning it from first build to production",
-      "Front-end and back-end development",
-      "Responsive layouts and interface implementation",
-      "Site functionality, testing and production deployment",
+      "Course pages presenting the organisation's educational programmes",
+      "Student registration and application forms, plus general enquiry forms",
+      "A content management area so the team can edit website content themselves",
+      "The PHP back end, database integration and email notifications for new enquiries and applications",
+      "Responsive layouts for desktop and mobile",
+      "Testing and production deployment",
     ],
-    approach: null,
-    outcome: null,
+    approach: [
+      "PHP back end with database-backed content, so pages and programmes are edited through the admin area rather than in code",
+      "Form submissions stored in the database and sent to the team as email notifications, so no enquiry or application depends on someone checking an inbox at the right moment",
+      "Front end in HTML5 and JavaScript, styled with Tailwind CSS and Bootstrap",
+      "Deployed to shared hosting through cPanel — an affordable setup the organisation can keep running without specialist infrastructure",
+    ],
+    outcome:
+      "The organisation launched with a complete website that presents its programmes, takes enquiries and student applications online, and lets the team manage their own content.",
     screenshot: null,
     visual: "dhub",
   },
@@ -126,130 +141,78 @@ export const projects: Project[] = [
     group: "sole",
     industry: "Health and social care",
     summary:
-      "A care provider's website that explains home, dementia, autism and live-in care clearly and makes enquiring straightforward.",
+      "The first website for a care provider: clear pages for each care service, enquiry and appointment request forms, and an admin area for managing content.",
     role: "Full-stack software developer",
     team: "Sole developer",
     liveUrl: "https://www.jordancare.co.uk/",
     liveLabel: "jordancare.co.uk",
     technologies: ["JavaScript", "PHP", "HTML5", "Tailwind CSS", "Bootstrap"],
     overview:
-      "Jordan Care's website presents the organisation's care services — home care, dementia care, autism care and live-in care — to families and individuals looking for support, often at a stressful moment.",
-    challenge: null,
+      "Jordan Care provides home care, dementia care, autism care and live-in care. People looking for care are often doing so at a stressful moment, for themselves or a family member. I designed and built the organisation's first website on my own.",
+    challenge:
+      "The site had to explain several quite different care services clearly to people who may be anxious and short of time, and make it easy to take the next step — whether that's a question or a request for an appointment. Behind the scenes, the organisation needed to keep its content current without technical help.",
     contribution: [
-      "Developed the website end to end as the sole developer",
-      "Front-end and back-end implementation",
-      "Responsive design, so services are as easy to read on a phone as on a desktop",
-      "Site functionality, testing and deployment",
-      "A user-friendly structure that presents each care service clearly for prospective clients",
+      "Website design and development, end to end",
+      "Service pages for each type of care",
+      "Contact and enquiry forms, and appointment request functionality",
+      "An admin area for managing website content",
+      "PHP form processing, database integration and email notifications",
+      "Responsive layouts for mobile and desktop, testing and deployment",
     ],
-    approach: null,
-    outcome: null,
+    approach: [
+      "Each care service has its own clearly structured page, with a route to enquire close at hand",
+      "Enquiries and appointment requests are processed in PHP, stored in the database and sent to the organisation as email notifications",
+      "Database-backed content managed through an admin area, so staff can update the site themselves",
+      "Front end in HTML5 and JavaScript with Tailwind CSS and Bootstrap; deployed to shared hosting through cPanel",
+    ],
+    outcome:
+      "The organisation has a working website that presents its services, receives enquiries and appointment requests, and can be kept up to date by its own staff.",
     screenshot: null,
     visual: "jordan",
   },
   {
-    slug: "wildz",
-    name: "Wildz",
+    slug: "casino-platforms",
+    name: "Commercial casino platforms",
     group: "team",
     industry: "Online gaming",
-    summary: "A live online casino platform, developed and maintained by a senior engineering team.",
+    summary:
+      "Four live online casino brands running on one shared platform. As part of the senior engineering team I built an automated content translation workflow and integrated the sportsbook into the landing page.",
     role: "Senior software developer",
     team: "Senior engineering team",
     liveUrl: "https://www.wildz.com/en/",
     liveLabel: "wildz.com",
+    brands: [
+      { name: "Wildz", url: "https://www.wildz.com/en/", label: "wildz.com", tone: { base: "#1f3d2b", tile: "#3f7a52", mark: "#e8f5c8" } },
+      { name: "Wheelz", url: "https://www.wheelz.com/en/casino", label: "wheelz.com", tone: { base: "#3a2a1a", tile: "#a8642c", mark: "#ffe9cf" } },
+      { name: "Caxino", url: "https://www.caxino.com/en/casino", label: "caxino.com", tone: { base: "#22243a", tile: "#4d55a8", mark: "#dfe2ff" } },
+      { name: "Spinz", url: "https://www.spinz.com/en", label: "spinz.com", tone: { base: "#3a1d2c", tile: "#a33d6b", mark: "#ffe0ee" } },
+    ],
+    highlights: [
+      "An automated content translation workflow for brand content",
+      "Sportsbook integration on the landing page",
+    ],
     technologies: ["Go", "TypeScript", "JavaScript", "Node.js", "AWS"],
     overview:
-      "Wildz is a commercial online casino platform serving real players in production. I worked on it as part of the senior software engineering team; the product and brand belong to its operator.",
-    challenge: null,
+      "Wildz, Wheelz, Caxino and Spinz are commercial online casino brands serving real players, all running on a shared platform. I worked on them as a senior developer in the engineering team that develops and maintains that platform. The brands and products belong to their operator.",
+    challenge:
+      "On a shared platform, a change made for one brand can affect all four, and every one of them is live. New functionality had to fit into the existing system, keep behaviour consistent across brands, and not put the stability of live services at risk.",
     contribution: [
-      "Front-end and back-end development within the senior engineering team",
-      "API integrations and application functionality",
-      "Troubleshooting production issues",
+      "Implemented a content translation workflow within the existing platform, so brand content can be translated automatically",
+      "Integrated the sportsbook experience into the front-end landing page",
+      "Back-end services and API integrations",
+      "Troubleshooting, production fixes and performance improvements",
       "Production deployments",
     ],
-    approach: null,
-    outcome: null,
+    approach: [
+      "Worked across front end and back end with the shared-platform dependencies in mind, so features built once behave consistently on every brand",
+      "Built new functionality into the existing platform rather than alongside it, weighing compatibility and reliability for live services",
+      "Go and Node.js services with TypeScript and JavaScript, running on AWS",
+    ],
+    outcome:
+      "Automated content translation and the landing-page sportsbook integration shipped to the live platform, alongside other enhancements, production fixes and reliability improvements.",
     screenshot: null,
     visual: "platform",
     tone: { base: "#1f3d2b", tile: "#3f7a52", mark: "#e8f5c8" },
-  },
-  {
-    slug: "wheelz",
-    name: "Wheelz",
-    group: "team",
-    industry: "Online gaming",
-    summary: "A live online casino platform, developed and maintained by a senior engineering team.",
-    role: "Senior software developer",
-    team: "Senior engineering team",
-    liveUrl: "https://www.wheelz.com/en/casino",
-    liveLabel: "wheelz.com",
-    technologies: ["Go", "TypeScript", "JavaScript", "Node.js", "AWS"],
-    overview:
-      "Wheelz is a commercial online casino platform. I contributed to its development and maintenance as part of the senior engineering team; the product and brand belong to its operator.",
-    challenge: null,
-    contribution: [
-      "Front-end and back-end engineering",
-      "API development and integrations",
-      "Application enhancements",
-      "Troubleshooting and deployments",
-    ],
-    approach: null,
-    outcome: null,
-    screenshot: null,
-    visual: "platform",
-    tone: { base: "#3a2a1a", tile: "#a8642c", mark: "#ffe9cf" },
-  },
-  {
-    slug: "caxino",
-    name: "Caxino",
-    group: "team",
-    industry: "Online gaming",
-    summary: "A live online casino platform, developed and maintained by a senior engineering team.",
-    role: "Senior software developer",
-    team: "Senior engineering team",
-    liveUrl: "https://www.caxino.com/en/casino",
-    liveLabel: "caxino.com",
-    technologies: ["Go", "TypeScript", "JavaScript", "Node.js", "AWS"],
-    overview:
-      "Caxino is a commercial online casino platform. I worked within the senior software engineering team that develops and maintains it; the product and brand belong to its operator.",
-    challenge: null,
-    contribution: [
-      "Full-stack development across back-end services and front-end functionality",
-      "API and system integrations",
-      "Debugging",
-      "Production deployments",
-    ],
-    approach: null,
-    outcome: null,
-    screenshot: null,
-    visual: "platform",
-    tone: { base: "#22243a", tile: "#4d55a8", mark: "#dfe2ff" },
-  },
-  {
-    slug: "spinz",
-    name: "Spinz",
-    group: "team",
-    industry: "Online gaming",
-    summary: "A live online casino platform, developed and maintained by a senior engineering team.",
-    role: "Senior software developer",
-    team: "Senior engineering team",
-    liveUrl: "https://www.spinz.com/en",
-    liveLabel: "spinz.com",
-    technologies: ["Go", "TypeScript", "JavaScript", "Node.js", "AWS"],
-    overview:
-      "Spinz is a commercial online casino platform. I contributed as part of the senior engineering team responsible for developing and maintaining it; the product and brand belong to its operator.",
-    challenge: null,
-    contribution: [
-      "Front-end and back-end implementation",
-      "Go-based service development",
-      "API integrations",
-      "Troubleshooting and application deployments",
-    ],
-    approach: null,
-    outcome: null,
-    screenshot: null,
-    visual: "platform",
-    tone: { base: "#3a1d2c", tile: "#a33d6b", mark: "#ffe0ee" },
   },
 ];
 

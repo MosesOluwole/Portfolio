@@ -7,7 +7,7 @@ import s from "./Work.module.css";
 export default function Work() {
   const aligncv = getProject("aligncv")!;
   const [dhub, jordan] = byGroup("sole");
-  const platforms = byGroup("team");
+  const [platforms] = byGroup("team");
 
   return (
     <section id="work" className={s.work} aria-labelledby="work-title">
@@ -85,11 +85,11 @@ export default function Work() {
           <div className={s.groupHead}>
             <h3 className={s.groupTitle}>Commercial platforms, as part of a team</h3>
             <p className={s.groupNote}>
-              Four live online casino platforms where I worked as a senior developer in the engineering team that
-              builds and maintains them. The products and brands belong to their operator.
+              Four live online casino brands on one shared platform, where I worked as a senior developer in the
+              engineering team that builds and maintains it. The brands belong to their operator.
             </p>
           </div>
-          <PlatformIndex projects={platforms} />
+          {platforms && <PlatformIndex project={platforms} />}
         </div>
       </div>
     </section>

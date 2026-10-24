@@ -46,11 +46,13 @@ export default async function CaseStudy({ params }: { params: Promise<Params> })
           <div><dt>My role</dt><dd>{p.role}</dd></div>
           <div><dt>Team</dt><dd>{p.team}</dd></div>
           <div>
-            <dt>Live product</dt>
-            <dd>
-              <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="textlink">
-                {p.liveLabel}<span className="visually-hidden"> (opens in a new tab)</span>
-              </a>
+            <dt>{p.brands ? "Live products" : "Live product"}</dt>
+            <dd className={p.brands ? s.brandLinks : undefined}>
+              {(p.brands ?? [{ name: p.name, url: p.liveUrl, label: p.liveLabel }]).map((b) => (
+                <a key={b.url} href={b.url} target="_blank" rel="noopener noreferrer" className="textlink">
+                  {b.label}<span className="visually-hidden"> (opens in a new tab)</span>
+                </a>
+              ))}
             </dd>
           </div>
         </dl>
@@ -67,8 +69,9 @@ export default async function CaseStudy({ params }: { params: Promise<Params> })
       <div className={`wrap ${s.body}`}>
         {isTeam && (
           <p className={s.disclaimer}>
-            {p.name} is built and run by a wider team and owned by its operator. This page describes my own
-            contribution as a member of the senior engineering team, not the platform as a whole.
+            {p.brands ? p.brands.map((b) => b.name).join(", ") : p.name} {p.brands ? "are" : "is"} built and run by a
+            wider team and owned by {p.brands ? "their" : "its"} operator. This page describes my own contribution as a
+            member of the senior engineering team, not the platform as a whole.
           </p>
         )}
 

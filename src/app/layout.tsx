@@ -4,6 +4,7 @@ import { site, siteUrl } from "@/content/site";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import ConfigNotice from "@/components/ConfigNotice";
+import { JsonLd, siteGraph } from "@/lib/schema";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -29,38 +30,21 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: { default: site.seo.title, template: `%s — ${site.name}` },
   description: site.seo.description,
-  keywords: [...site.seo.keywords],
-  authors: [{ name: site.name }],
-  alternates: { canonical: "/" },
-  openGraph: {
-    type: "website",
-    locale: "en_GB",
-    url: "/",
-    siteName: site.name,
-    title: site.seo.title,
-    description: site.seo.description,
-  },
-  twitter: { card: "summary_large_image", title: site.seo.title, description: site.seo.description },
-  robots: { index: true, follow: true },
+  applicationName: site.name,
+  authors: [{ name: site.name, url: siteUrl }],
+  creator: site.name,
+  // Canonical and og:url are set per page, so nothing inherits the home page's.
+  openGraph: { type: "website", locale: "en_GB", siteName: site.name },
+  twitter: { card: "summary_large_image" },
+  ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? { verification: { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION } }
+    : {}),
 };
 
 export const viewport: Viewport = {
   themeColor: "#efede6",
   width: "device-width",
   initialScale: 1,
-};
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  name: `${site.name} — freelance software engineer`,
-  description: site.seo.description,
-  url: siteUrl,
-  areaServed: "GB",
-  address: { "@type": "PostalAddress", addressLocality: "London", addressCountry: "GB" },
-  founder: { "@type": "Person", name: site.name, jobTitle: site.role },
-  ...(site.email ? { email: site.email } : {}),
-  sameAs: [site.linkedinUrl, site.githubUrl, site.barkUrl].filter(Boolean),
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -72,10 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteHeader />
         <main id="main">{children}</main>
         <SiteFooter />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <JsonLd data={siteGraph()} />
       </body>
     </html>
   );

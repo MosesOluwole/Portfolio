@@ -22,13 +22,13 @@ export const site = {
   yearsExperience: 7,
 
   /** TODO: your public contact email, e.g. "hello@your-domain.co.uk" */
-  email: "",
+  email: "oluwolemoses@gmail.com",
   /** TODO: full URL of your Bark profile */
-  barkUrl: "",
+  barkUrl: "https://www.bark.com/en/gb/company/moses-oluwole/RdYDZ/",
   /** TODO: full LinkedIn profile URL */
-  linkedinUrl: "",
+  linkedinUrl: "https://www.linkedin.com/in/moses-oluwole-30b96172/",
   /** TODO: full GitHub profile URL */
-  githubUrl: "",
+  githubUrl: "https://github.com/MosesOluwole",
 
   /**
    * Professional photo for the About section. Put the file in /public
@@ -38,25 +38,48 @@ export const site = {
   photo: "",
   photoAlt: "Moses Oluwole",
 
+  /**
+   * Privacy notice settings (rendered at /privacy). These are YOUR
+   * decisions as data controller — check each one is true before launch,
+   * and update `lastUpdated` whenever you change the notice.
+   */
+  privacy: {
+    lastUpdated: "2026-10-24",
+    /** Where your inbox is hosted (enquiries end up here). */
+    emailProvider: "Google (Gmail)",
+    /** Where the site is hosted. Change if you don't deploy to Vercel. */
+    hostingProvider: "Vercel",
+    /** How long enquiries that don't lead to work are kept. */
+    enquiryRetention: "12 months",
+    /** How long client records are kept after a project ends (tax and legal records). */
+    clientRetention: "6 years",
+  },
+
   seo: {
-    title: "Moses Oluwole — Freelance Full-Stack Software Engineer, London",
+    title: "Moses Oluwole — Freelance Full-Stack Developer in London, UK",
     description:
-      "Freelance full-stack developer in the UK. I build web applications, APIs, MVPs, dashboards and business automation for small businesses, founders and teams — from first conversation to dependable software.",
-    keywords: [
-      "freelance full-stack developer UK",
-      "freelance software developer London",
-      "web application developer",
-      "backend developer",
-      "API development",
-      "custom software development",
-      "MVP development for startups",
-      "business automation",
-    ],
+      "Freelance full-stack software engineer in London with 7+ years' experience. Custom web applications, APIs, MVPs and business integrations for UK small businesses, founders and teams.",
   },
 } as const;
 
-export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "http://localhost:3000";
+/**
+ * Canonical origin used for canonical URLs, sitemap, robots.txt, Open Graph
+ * and structured data. Set NEXT_PUBLIC_SITE_URL to your real domain
+ * (e.g. https://www.mosesoluwole.co.uk). On Vercel, the project's
+ * production domain is used automatically if the variable is missing.
+ */
+function resolveSiteUrl(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
+  if (explicit) return explicit.replace(/\/$/, "");
+  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  if (vercel) return `https://${vercel}`;
+  if (process.env.NODE_ENV === "production" && process.env.CI) {
+    console.warn("[seo] NEXT_PUBLIC_SITE_URL is not set: canonical URLs will point to localhost.");
+  }
+  return "http://localhost:3000";
+}
+
+export const siteUrl = resolveSiteUrl();
 
 /** Keys from `site` that are still empty — used by the dev-only notice. */
 export function missingConfig(): string[] {

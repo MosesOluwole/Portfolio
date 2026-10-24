@@ -186,7 +186,8 @@ export default function EnquiryForm({ mode, email }: { mode: Mode; email: string
           {status === "sending" ? "Sending enquiry…" : mode === "api" ? "Send enquiry" : "Send enquiry by email"}
         </button>
         <p id="form-privacy" className={s.privacy}>
-          Your details are only used to reply to this enquiry. They&rsquo;re never shared or added to a mailing list.
+          Your details are only used to reply to this enquiry. They&rsquo;re never sold or added to a mailing list.
+          See the <a href="/privacy">privacy notice</a>.
           {mode === "mailto" && " Pressing send opens your email app with your enquiry filled in."}
         </p>
       </div>

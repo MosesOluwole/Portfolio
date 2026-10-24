@@ -47,7 +47,7 @@ export default function SiteFooter() {
         )}
       </div>
       <div className={`wrap ${s.base}`}>
-        <p>&copy; {year} {site.name}</p>
+        <p>&copy; {year} {site.name} <span aria-hidden="true">/</span> <Link href="/privacy">Privacy notice</Link></p>
         <p>Designed and built by {site.name.split(" ")[0]}. Products shown belong to their respective owners.</p>
       </div>
     </footer>

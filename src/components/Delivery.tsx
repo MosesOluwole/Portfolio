@@ -8,7 +8,7 @@ import s from "./Delivery.module.css";
 const record = [
   { what: "Years of professional software engineering", detail: "7+" },
   { what: "Live business websites built as sole developer", detail: "DHUB Education, Jordan Care" },
-  { what: "Live commercial platforms, senior engineering team", detail: "Wildz, Wheelz, Caxino, Spinz" },
+  { what: "Live casino brands on a shared platform, senior engineering team", detail: "Wildz, Wheelz, Caxino, Spinz" },
   { what: "Independent product designed, built and run", detail: "AlignCV, in private beta" },
 ];
 

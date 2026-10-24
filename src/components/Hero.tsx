@@ -8,10 +8,11 @@ export default function Hero() {
       <div className={`wrap ${s.inner}`}>
         <p className={s.status}>
           <span className={s.dot} aria-hidden="true" />
-          {site.name}, {site.role.toLowerCase()} in {site.location.split(",")[0]}. {site.availability}.
+          {site.availability}
         </p>
 
         <h1 id="hero-title" className={s.title}>
+          <span className={s.kicker}>Freelance full-stack software engineer in London</span>
           <span className={s.line}><span>I build the software</span></span>
           <span className={s.line}><span>your business</span></span>
           <span className={s.line}><span>runs on.</span></span>
@@ -19,7 +20,7 @@ export default function Hero() {
 
         <div className={s.copy}>
           <p className={s.lede}>
-            Web applications, APIs, MVPs and automation for small businesses, founders and teams.
+            Custom web applications, APIs, MVPs and integrations for UK businesses, founders and teams.
           </p>
           <p className={s.body}>
             {site.yearsExperience}+ years of engineering, from sole-developer builds to live commercial platforms.

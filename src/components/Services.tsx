@@ -22,22 +22,22 @@ export default function Services() {
           {services.map((sv, i) => (
             <details key={sv.id} className={s.item} open={i === 0}>
               <summary className={s.summary}>
-                <span className={s.itemTitle}>{sv.title}</span>
+                <h3 className={s.itemTitle}>{sv.title}</h3>
                 <span className={s.toggle} aria-hidden="true" />
               </summary>
               <div className={s.body}>
                 <p className={s.problem}>{sv.problem}</p>
                 <div className={s.cols}>
                   <div>
-                    <h3 className={s.h}>What I deliver</h3>
+                    <h4 className={s.h}>What I deliver</h4>
                     <ul className={s.deliver}>
                       {sv.deliver.map((d) => <li key={d}>{d}</li>)}
                     </ul>
                   </div>
                   <div>
-                    <h3 className={s.h}>Suited to</h3>
+                    <h4 className={s.h}>Suited to</h4>
                     <p>{sv.suitedTo}</p>
-                    <h3 className={s.h} style={{ marginTop: "1.25rem" }}>Next step</h3>
+                    <h4 className={s.h} style={{ marginTop: "1.25rem" }}>Next step</h4>
                     <p>
                       {sv.nextStep}{" "}
                       <EnquiryLink type={sv.enquiryType} className="textlink">Start an enquiry</EnquiryLink>

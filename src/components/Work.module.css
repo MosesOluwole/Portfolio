@@ -30,34 +30,31 @@
 .links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: 0.25rem; font-size: var(--t-sm); }
 @media (max-width: 860px) { .pairMain, .pairSide { grid-column: 1 / -1; margin-top: 0; } }
 
-/* C — index */
+/* C — shared-platform feature */
 .indexBand { background: var(--paper-2); }
-.index { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.55fr); column-gap: var(--s-5); align-items: start; }
-.indexHeader, .indexRow { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) 7.5rem; column-gap: var(--s-3); align-items: baseline; }
-.indexHeader { grid-column: 1; font-size: var(--t-xs); color: var(--grey); padding-bottom: 0.6rem; border-bottom: 1.5px solid var(--ink); }
-.indexList { grid-column: 1; list-style: none; }
-.indexRow { padding: 1.1rem 0; border-bottom: 1px solid var(--rule); position: relative; transition: padding-left 220ms var(--ease); }
-.indexRow::before { content: ""; position: absolute; left: 0; top: 50%; width: 0; height: 3px; background: var(--ink); transform: translateY(-50%); transition: width 220ms var(--ease); }
-.indexRowOn { padding-left: 1.75rem; }
-.indexRowOn::before { width: 1rem; }
-.indexName { font-family: var(--font-display); font-size: var(--t-lg); font-weight: 600; letter-spacing: -0.03em; text-decoration: none; font-variation-settings: "wdth" 85; }
-.indexName:hover { text-decoration: underline; text-decoration-thickness: 2px; }
-.indexRole, .indexStack { font-size: var(--t-sm); color: var(--grey); }
-.indexLive { font-size: var(--t-sm); font-weight: 600; justify-self: end; }
-.preview { grid-column: 2; grid-row: 1 / span 2; position: sticky; top: calc(var(--header-h) + 2rem); }
+.platforms { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--s-3); row-gap: var(--s-5); align-items: start; }
+.platformsText { grid-column: 1 / span 5; display: grid; gap: var(--s-3); }
+.platformsSide { grid-column: 7 / -1; }
+.platformsSummary { font-size: var(--t-md); line-height: 1.45; max-width: 40ch; }
+.highlightsTitle { font-family: var(--font-body); font-size: var(--t-xs); font-weight: 600; color: var(--grey); letter-spacing: 0; line-height: 1.4; font-variation-settings: normal; margin-bottom: 0.6rem; }
+.highlights ul { list-style: none; border-top: 1.5px solid var(--ink); }
+.highlights li {
+  padding: 0.9rem 0; border-bottom: 1px solid var(--rule);
+  font-family: var(--font-display); font-size: var(--t-lg); font-weight: 600; letter-spacing: -0.025em; line-height: 1.1; font-variation-settings: "wdth" 88;
+}
+.brandList { list-style: none; margin-top: var(--s-3); border-top: 1.5px solid var(--ink); }
+.brandRow { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-2); padding: 0.85rem 0; border-bottom: 1px solid var(--rule); position: relative; transition: padding-left 220ms var(--ease); }
+.brandRow::before { content: ""; position: absolute; left: 0; top: 50%; width: 0; height: 3px; background: var(--ink); transform: translateY(-50%); transition: width 220ms var(--ease); }
+.brandRowOn { padding-left: 1.5rem; }
+.brandRowOn::before { width: 0.85rem; }
+.brandName { font-family: var(--font-display); font-size: var(--t-lg); font-weight: 600; letter-spacing: -0.03em; font-variation-settings: "wdth" 88; }
+.indexLive { font-size: var(--t-sm); font-weight: 600; }
 .previewNote { margin-top: 0.6rem; font-size: var(--t-xs); color: var(--grey); }
 
-@media (max-width: 1080px) {
-  .index { grid-template-columns: 1fr; }
-  .preview { display: none; }
+@media (max-width: 960px) {
+  .platformsText, .platformsSide { grid-column: 1 / -1; }
 }
-@media (max-width: 720px) {
-  .indexHeader { display: none; }
-  .indexRow { grid-template-columns: 1fr auto; row-gap: 0.25rem; }
-  .indexLive { justify-self: end; }
-  .indexName { grid-column: 1; }
-  .indexLive { grid-column: 2; grid-row: 1; }
-  .indexRole, .indexStack { grid-column: 1 / -1; }
-  .indexRowOn { padding-left: 0; }
-  .indexRowOn::before { width: 0; }
+@media (hover: none) {
+  .brandRowOn { padding-left: 0; }
+  .brandRowOn::before { width: 0; }
 }

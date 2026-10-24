@@ -6,6 +6,7 @@
 .meta { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-3); margin: var(--s-5) 0 0; padding-top: var(--s-2); border-top: 1.5px solid var(--ink); }
 .meta dt { font-size: var(--t-xs); color: var(--grey); }
 .meta dd { margin: 0.25rem 0 0; font-weight: 600; font-size: var(--t-sm); }
+.brandLinks { display: flex; flex-wrap: wrap; gap: 0.25rem 0.9rem; }
 @media (max-width: 760px) { .meta { grid-template-columns: 1fr 1fr; } }
 
 .visual { margin-top: var(--s-5); }

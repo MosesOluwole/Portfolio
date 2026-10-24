@@ -6,6 +6,13 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   outputFileTracingRoot: path.resolve("."),
   images: { formats: ["image/avif", "image/webp"] },
+  async redirects() {
+    return ["wildz", "wheelz", "caxino", "spinz"].map((slug) => ({
+      source: `/work/${slug}`,
+      destination: "/work/casino-platforms",
+      permanent: true,
+    }));
+  },
   async headers() {
     return [
       {
