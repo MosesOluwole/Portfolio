@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { budgets, projectTypes, timeframes } from "@/content/enquiry";
-import { validateEnquiry, type Enquiry, type FieldErrors } from "@/lib/enquiry";
+import { FIELD_LIMITS, validateEnquiry, type Enquiry, type FieldErrors } from "@/lib/enquiry";
 import { track } from "@/lib/analytics";
 import s from "./Contact.module.css";
 
@@ -130,19 +130,19 @@ export default function EnquiryForm({ mode, email }: { mode: Mode; email: string
       <div className={s.row2}>
         <div className={s.field}>
           <label htmlFor="f-name">Your name</label>
-          <input {...field("name")} type="text" autoComplete="name" required />
+          <input {...field("name")} type="text" autoComplete="name" maxLength={FIELD_LIMITS.name} required />
           {err("name")}
         </div>
         <div className={s.field}>
           <label htmlFor="f-email">Email address</label>
-          <input {...field("email")} type="email" autoComplete="email" required />
+          <input {...field("email")} type="email" autoComplete="email" maxLength={FIELD_LIMITS.email} required />
           {err("email")}
         </div>
       </div>
 
       <div className={s.field}>
         <label htmlFor="f-company">Company or business name <span className={s.opt}>(optional)</span></label>
-        <input {...field("company")} type="text" autoComplete="organization" />
+        <input {...field("company")} type="text" autoComplete="organization" maxLength={FIELD_LIMITS.company} />
         {err("company")}
       </div>
 
@@ -176,7 +176,7 @@ export default function EnquiryForm({ mode, email }: { mode: Mode; email: string
       <div className={s.field}>
         <label htmlFor="f-description">What are you trying to build?</label>
         <p className={s.hint} id="hint-description">Plain English is perfect. What&rsquo;s the problem, and who is it for?</p>
-        <textarea {...field("description")} rows={6} required aria-describedby={errors.description ? "e-description hint-description" : "hint-description"} />
+        <textarea {...field("description")} rows={6} maxLength={FIELD_LIMITS.description} required aria-describedby={errors.description ? "e-description hint-description" : "hint-description"} />
         {err("description")}
       </div>
 

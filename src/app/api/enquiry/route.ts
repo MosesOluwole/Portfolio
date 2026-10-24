@@ -1,49 +1,108 @@
 import { NextResponse } from "next/server";
-import { enquiryApiConfigured, validateEnquiry, type Enquiry } from "@/lib/enquiry";
+import { enquiryApiConfigured, MAX_BODY_BYTES, validateEnquiry, type Enquiry } from "@/lib/enquiry";
+import { siteUrl } from "@/content/site";
 
 export const runtime = "nodejs";
 
-// Basic in-memory rate limit (per server instance). Adequate for a
-// portfolio; swap for a shared store if you ever need more.
+const json = (body: unknown, status = 200) =>
+  NextResponse.json(body, { status, headers: { "Cache-Control": "no-store" } });
+
+/* ── Rate limiting ────────────────────────────────────────────────
+   In-memory, per server instance: 5 attempts per IP per 10 minutes.
+   On serverless hosting each instance has its own memory, so this slows
+   casual abuse rather than guaranteeing a global limit. Pair it with the
+   host's firewall rate limiting (see docs/SECURITY.md). */
+const WINDOW_MS = 10 * 60_000;
+const MAX_HITS = 5;
 const hits = new Map<string, number[]>();
 function rateLimited(ip: string) {
   const now = Date.now();
-  const recent = (hits.get(ip) ?? []).filter((t) => now - t < 10 * 60_000);
+  if (hits.size > 5_000) {
+    for (const [k, v] of hits) if (v.every((t) => now - t > WINDOW_MS)) hits.delete(k);
+  }
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
   recent.push(now);
   hits.set(ip, recent);
-  return recent.length > 5;
+  return recent.length > MAX_HITS;
+}
+
+function clientIp(req: Request) {
+  // Vercel sets x-real-ip to the connecting client; x-forwarded-for's first entry is the fallback.
+  return req.headers.get("x-real-ip") || req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+}
+
+/** Browsers always send Origin on cross-site POSTs; reject anything not from this site. */
+function sameOrigin(req: Request) {
+  const origin = req.headers.get("origin");
+  if (!origin) return true; // non-browser clients; still subject to every other check
+  try {
+    const o = new URL(origin).host;
+    const allowed = new Set([new URL(siteUrl).host, req.headers.get("host") ?? ""]);
+    if (process.env.VERCEL_URL) allowed.add(process.env.VERCEL_URL);
+    return allowed.has(o);
+  } catch {
+    return false;
+  }
 }
 
 const esc = (v: string) =>
-  v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+const oneLine = (v: string) => v.replace(/[\r\n\t]+/g, " ").trim();
+
+const FIELDS = ["name", "email", "company", "type", "budget", "timeframe", "description"] as const;
 
 export async function POST(req: Request) {
+  if (!sameOrigin(req)) return json({ error: "Requests must come from this website." }, 403);
+
+  if (!(req.headers.get("content-type") ?? "").toLowerCase().startsWith("application/json")) {
+    return json({ error: "Send the enquiry as JSON." }, 415);
+  }
+
+  const declared = Number(req.headers.get("content-length") ?? "0");
+  if (declared > MAX_BODY_BYTES) return json({ error: "The enquiry is too large." }, 413);
+
+  if (rateLimited(clientIp(req))) {
+    console.warn("[enquiry] rate limit reached");
+    return json({ error: "Too many enquiries from this connection. Try again in a few minutes." }, 429);
+  }
+
   if (!enquiryApiConfigured()) {
-    return NextResponse.json(
-      { error: "The enquiry form isn't connected yet. Please email directly instead." },
-      { status: 503 },
-    );
+    return json({ error: "The enquiry form isn't connected yet. Please email directly instead." }, 503);
   }
 
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-  if (rateLimited(ip)) {
-    return NextResponse.json({ error: "Too many enquiries from this connection. Try again in a few minutes." }, { status: 429 });
-  }
-
-  let body: Partial<Enquiry> & { website?: string };
+  let raw: unknown;
   try {
-    body = await req.json();
+    const text = await req.text();
+    if (Buffer.byteLength(text) > MAX_BODY_BYTES) return json({ error: "The enquiry is too large." }, 413);
+    raw = JSON.parse(text);
   } catch {
-    return NextResponse.json({ error: "The enquiry couldn't be read. Refresh the page and try again." }, { status: 400 });
+    return json({ error: "The enquiry couldn't be read. Refresh the page and try again." }, 400);
+  }
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
+    return json({ error: "The enquiry couldn't be read. Refresh the page and try again." }, 400);
+  }
+  const body = raw as Record<string, unknown>;
+
+  // Honeypot: real people never fill this hidden field. Respond as a success so bots don't adapt.
+  if (typeof body.website === "string" && body.website.length > 0) {
+    console.warn("[enquiry] honeypot triggered");
+    return json({ ok: true });
   }
 
-  // Honeypot: real people never fill this hidden field.
-  if (body.website) return NextResponse.json({ ok: true });
+  // Allow-list fields and require strings; anything else is ignored.
+  const e = {} as Enquiry;
+  for (const f of FIELDS) {
+    const v = body[f];
+    if (v !== undefined && typeof v !== "string") return json({ errors: { [f]: "Invalid value." } }, 422);
+    e[f] = typeof v === "string" ? v : "";
+  }
+  e.name = e.name.trim();
+  e.email = e.email.trim();
+  e.company = e.company.trim();
 
-  const errors = validateEnquiry(body);
-  if (Object.keys(errors).length) return NextResponse.json({ errors }, { status: 422 });
+  const errors = validateEnquiry(e);
+  if (Object.keys(errors).length) return json({ errors }, 422);
 
-  const e = body as Enquiry;
   const rows: [string, string][] = [
     ["Name", e.name], ["Email", e.email], ["Company", e.company || "—"], ["Project type", e.type],
     ["Budget", e.budget], ["Timeframe", e.timeframe],
@@ -63,18 +122,20 @@ export async function POST(req: Request) {
         from: process.env.ENQUIRY_FROM_EMAIL,
         to: [process.env.ENQUIRY_TO_EMAIL],
         reply_to: e.email,
-        subject: `Project enquiry: ${e.type} — ${e.name}`,
+        subject: oneLine(`Project enquiry: ${e.type} — ${e.name}`).slice(0, 200),
         html,
         text,
       }),
+      signal: AbortSignal.timeout(10_000),
     });
     if (!res.ok) {
-      console.error("Resend error", res.status, await res.text());
-      return NextResponse.json({ error: "Your enquiry couldn't be sent just now. Please try again, or email directly." }, { status: 502 });
+      // Log the status only: response bodies can echo addresses.
+      console.error(`[enquiry] email provider rejected the message (HTTP ${res.status})`);
+      return json({ error: "Your enquiry couldn't be sent just now. Please try again, or email directly." }, 502);
     }
-    return NextResponse.json({ ok: true });
+    return json({ ok: true });
   } catch (err) {
-    console.error("Enquiry delivery failed", err);
-    return NextResponse.json({ error: "Your enquiry couldn't be sent just now. Please try again, or email directly." }, { status: 502 });
+    console.error(`[enquiry] email delivery failed: ${err instanceof Error ? err.name : "unknown error"}`);
+    return json({ error: "Your enquiry couldn't be sent just now. Please try again, or email directly." }, 502);
   }
 }

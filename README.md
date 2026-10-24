@@ -1,84 +1,57 @@
-# Moses Oluwole — portfolio
+# Moses Oluwole — Portfolio
 
-Next.js 15 (App Router) + TypeScript + CSS Modules. No UI or animation
-libraries: motion is CSS, interactivity is a few small client components.
+This is the source for my personal portfolio website.
 
-## Run it
+I'm a freelance full-stack software engineer based in London, with more than
+seven years of experience building and maintaining software for real
+businesses. I'm strongest on the back end — APIs, data and business logic —
+and I deliver complete products, interface included.
 
-```bash
-npm install
-npm run dev          # http://localhost:3000
-npm run verify       # typecheck + lint + production build
-npm run build && npm start
-```
+## Experience
 
-Requires Node 20.11+.
+**AlignCV** — Founder and sole engineer
+A CV-tailoring web application, currently in private beta. I designed and
+built it end to end: CV parsing, a structured match score, AI-assisted
+rewriting that rejects any line it can't trace back to the original CV, and
+DOCX/PDF export.
+[beta.aligncv.co.uk](https://beta.aligncv.co.uk)
 
-## Fill in your details (one place)
+**DHUB Education** — Full-stack developer (sole developer)
+The first website for an education consultancy, with course pages, student
+registration and application forms, enquiries, a content management area
+and email notifications.
+[dhubeducation.com](https://dhubeducation.com/)
 
-| What | Where |
-| --- | --- |
-| Email, Bark, LinkedIn, GitHub, availability, photo | `src/content/site.ts` |
-| Projects and case studies | `src/content/projects.ts` |
-| Services | `src/content/services.ts` |
-| Technologies | `src/content/capabilities.ts` |
-| Budget / timeframe / project-type options | `src/content/enquiry.ts` |
-| Testimonials (section hidden while empty) | `src/content/testimonials.ts` |
-| Track record and delivery principles | `src/components/Delivery.tsx` |
+**Jordan Care** — Full-stack developer (sole developer)
+The first website for a care provider, with service pages, enquiry and
+appointment request forms, an admin area and email notifications.
+[jordancare.co.uk](https://www.jordancare.co.uk/)
 
-Empty values are hidden, never rendered as broken links. In `npm run dev`
-a banner lists anything still missing, and case-study pages show
-"To be added" notes for `null` fields. Neither appears in production.
+**Wildz, Wheelz, Caxino and Spinz** — Senior software developer (senior engineering team)
+Four live online casino brands on a shared platform. My work included an
+automated content translation workflow, sportsbook integration on the
+landing page, backend services, API integrations, production fixes and
+deployments.
 
-### Still to supply
+## Skills
 
-- `email`, `barkUrl`, `linkedinUrl`, `githubUrl` in `site.ts`
-- For DHUB Education, Jordan Care and the four gaming platforms:
-  `challenge`, `approach` and (only with evidence) `outcome` in `projects.ts`
-- Optional: a professional photo (`site.photo`), permitted screenshots
-  (`/public/work/*.webp` + `screenshot` per project), real testimonials
-- Check the sportsbook paragraph in `Delivery.tsx` is worded as you want
+TypeScript, JavaScript, Node.js, NestJS, React, Next.js, Go, PHP (Laravel,
+Symfony), Python and Django, PostgreSQL and other SQL and NoSQL databases,
+Redis, REST APIs and integrations, and AWS (EC2, S3, Lambda, API Gateway).
 
-## Enquiry form
+## What I help with
 
-The form works in one of three honest modes, chosen automatically:
+Custom web applications, backend and API development, MVPs for founders,
+business automation and systems integration, and maintaining and improving
+existing software.
 
-1. **Direct delivery (recommended)** — when `RESEND_API_KEY`,
-   `ENQUIRY_TO_EMAIL` and `ENQUIRY_FROM_EMAIL` are set, submissions POST to
-   `/api/enquiry` and are emailed to you via Resend (reply-to is the
-   visitor). Includes server-side validation, a honeypot and a basic rate limit.
-2. **Email app** — with only `site.email` set, submitting opens the
-   visitor's email app with the enquiry pre-filled. The UI says so.
-3. **Not connected** — with neither, the form is replaced by a notice.
-   It never pretends to send.
+## Contact
 
-To enable Resend: create an account at resend.com, verify your domain,
-create an API key, then copy `.env.example` to `.env.local` (or set the
-variables in your host) and fill in the three values. Rebuild after
-changing them — the mode is decided at build time.
+- Email: [oluwolemoses@gmail.com](mailto:oluwolemoses@gmail.com)
+- LinkedIn: [moses-oluwole](https://www.linkedin.com/in/moses-oluwole-30b96172/)
+- Bark: [Moses Oluwole on Bark](https://www.bark.com/en/gb/company/moses-oluwole/RdYDZ/)
+- GitHub: [MosesOluwole](https://github.com/MosesOluwole)
 
-## SEO
+---
 
-See `docs/SEO.md` for the audit, keyword-to-page map, metadata, test
-results, launch checklist and 90-day plan. Service pages live in
-`src/content/servicePages.ts`.
-
-## Deploy (Vercel)
-
-1. Push the folder to a GitHub repository.
-2. Import it at vercel.com/new (framework is detected automatically).
-3. Add environment variables: `NEXT_PUBLIC_SITE_URL` (your final domain,
-   with https://) and, for the form, the three Resend variables. Optional:
-   `NEXT_PUBLIC_ANALYTICS=vercel`.
-4. Deploy, then add your custom domain in Project → Settings → Domains.
-
-Any Node host works too: `npm run build && npm start`.
-
-## Notes
-
-- Project visuals are original illustrations and are labelled as such on
-  the page. No third-party screenshots or brand assets are included.
-- Analytics are not installed. If you add them, prefer a cookieless option
-  (e.g. Vercel Web Analytics or Plausible) to avoid needing a consent banner.
-- `src/app/opengraph-image.tsx` generates the social sharing image;
-  `src/app/icon.svg` is the favicon.
+© Moses Oluwole. The products listed belong to their respective owners.
