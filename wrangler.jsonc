@@ -17,5 +17,14 @@
   // No public *.workers.dev copy of the site, and no public preview URLs.
   "workers_dev": false,
   "preview_urls": false,
+  // Non-secret settings for the enquiry form. Kept here so every deploy
+  // includes them (deploys replace dashboard plain-text variables otherwise).
+  // RESEND_API_KEY is NOT here: add it in the dashboard as a Secret.
+  "vars": {
+    "ENQUIRY_TO_EMAIL": "oluwolemoses@gmail.com",
+    "ENQUIRY_FROM_EMAIL": "Moses Oluwole Portfolio <enquiries@mosesoluwole.com>"
+  },
+  // Don't delete variables set in the dashboard when deploying.
+  "keep_vars": true,
   "observability": { "enabled": true }
 }
