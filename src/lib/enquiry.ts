@@ -1,4 +1,5 @@
 import { budgets, projectTypes, timeframes } from "@/content/enquiry";
+import { site, siteUrl } from "@/content/site";
 
 export type Enquiry = {
   name: string;
@@ -43,7 +44,33 @@ export function validateEnquiry(e: Partial<Enquiry>): FieldErrors {
   return errors;
 }
 
-/** Server-only: true when the Resend integration has everything it needs. */
+/**
+ * Server-only. Email delivery settings, read at request time.
+ *
+ * Only RESEND_API_KEY is required. The addresses default to the site's own
+ * config (the public contact email, and a sender on the site's domain, which
+ * must be verified in Resend). Set ENQUIRY_TO_EMAIL / ENQUIRY_FROM_EMAIL only
+ * to override them.
+ */
+export function enquiryConfig() {
+  const domain = new URL(siteUrl).hostname.replace(/^www\./, "");
+  return {
+    apiKey: process.env.RESEND_API_KEY?.trim() || "",
+    to: process.env.ENQUIRY_TO_EMAIL?.trim() || site.email,
+    from: process.env.ENQUIRY_FROM_EMAIL?.trim() || `${site.name} Portfolio <enquiries@${domain}>`,
+  };
+}
+
+/** Names of required settings that are missing (names only, never values). */
+export function enquiryMissingConfig(): string[] {
+  const c = enquiryConfig();
+  return [
+    !c.apiKey && "RESEND_API_KEY",
+    !c.to && "ENQUIRY_TO_EMAIL",
+    !c.from && "ENQUIRY_FROM_EMAIL",
+  ].filter((v): v is string => Boolean(v));
+}
+
 export function enquiryApiConfigured(): boolean {
-  return Boolean(process.env.RESEND_API_KEY && process.env.ENQUIRY_TO_EMAIL && process.env.ENQUIRY_FROM_EMAIL);
+  return enquiryMissingConfig().length === 0;
 }

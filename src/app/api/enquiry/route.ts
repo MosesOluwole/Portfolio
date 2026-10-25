@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
-import { enquiryApiConfigured, MAX_BODY_BYTES, validateEnquiry, type Enquiry } from "@/lib/enquiry";
+import {
+  enquiryApiConfigured, enquiryConfig, enquiryMissingConfig, MAX_BODY_BYTES, validateEnquiry, type Enquiry,
+} from "@/lib/enquiry";
 import { siteUrl } from "@/content/site";
 
 export const runtime = "nodejs";
@@ -57,12 +59,13 @@ const oneLine = (v: string) => v.replace(/[\r\n\t]+/g, " ").trim();
 const FIELDS = ["name", "email", "company", "type", "budget", "timeframe", "description"] as const;
 
 /**
- * GET → { configured: boolean }. Read at runtime by the form, so connecting
- * Resend only needs the Worker's runtime variables, not a rebuild.
- * Reveals nothing beyond whether the form can send directly.
+ * GET → { configured, missing }. Read at runtime by the form, so connecting
+ * Resend only needs the Worker's runtime settings, not a rebuild. `missing`
+ * lists setting NAMES only (they're documented publicly), never values.
  */
 export async function GET() {
-  return json({ configured: enquiryApiConfigured() });
+  const missing = enquiryMissingConfig();
+  return json({ configured: missing.length === 0, missing });
 }
 
 export async function POST(req: Request) {
@@ -81,6 +84,7 @@ export async function POST(req: Request) {
   }
 
   if (!enquiryApiConfigured()) {
+    console.warn(`[enquiry] direct delivery not configured; missing: ${enquiryMissingConfig().join(", ")}`);
     return json({ error: "The enquiry form isn't connected yet. Please email directly instead." }, 503);
   }
 
@@ -128,13 +132,14 @@ export async function POST(req: Request) {
     <p style="white-space:pre-wrap">${esc(e.description)}</p>`;
   const text = `${rows.map(([k, v]) => `${k}: ${v}`).join("\n")}\n\n${e.description}`;
 
+  const cfg = enquiryConfig();
   try {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
-      headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+      headers: { Authorization: `Bearer ${cfg.apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        from: process.env.ENQUIRY_FROM_EMAIL,
-        to: [process.env.ENQUIRY_TO_EMAIL],
+        from: cfg.from,
+        to: [cfg.to],
         reply_to: e.email,
         subject: oneLine(`Project enquiry: ${e.type} — ${e.name}`).slice(0, 200),
         html,
@@ -143,8 +148,11 @@ export async function POST(req: Request) {
       signal: AbortSignal.timeout(10_000),
     });
     if (!res.ok) {
-      // Log the status only: response bodies can echo addresses.
-      console.error(`[enquiry] email provider rejected the message (HTTP ${res.status})`);
+      // Log the status and Resend's error name only: bodies can echo addresses.
+      let reason = "";
+      try { reason = String(((await res.json()) as { name?: string }).name ?? ""); } catch { /* ignore */ }
+      const hint = res.status === 401 ? " (API key invalid)" : res.status === 403 ? " (sending domain not verified, or key lacks access)" : res.status === 422 ? " (invalid from/to address)" : "";
+      console.error(`[enquiry] email provider rejected the message (HTTP ${res.status}${reason ? `, ${reason}` : ""})${hint}`);
       return json({ error: "Your enquiry couldn't be sent just now. Please try again, or email directly." }, 502);
     }
     return json({ ok: true });

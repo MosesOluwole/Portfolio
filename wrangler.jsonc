@@ -17,9 +17,9 @@
   // No public *.workers.dev copy of the site, and no public preview URLs.
   "workers_dev": false,
   "preview_urls": false,
-  // Non-secret settings for the enquiry form. Kept here so every deploy
-  // includes them (deploys replace dashboard plain-text variables otherwise).
-  // RESEND_API_KEY is NOT here: add it in the dashboard as a Secret.
+  // Enquiry form: the ONLY setting needed is the RESEND_API_KEY secret
+  // (dashboard → Worker → Settings → Variables and Secrets → type "Secret").
+  // Recipient and sender default to site.ts; override them here if needed.
   "vars": {
     "ENQUIRY_TO_EMAIL": "oluwolemoses@gmail.com",
     "ENQUIRY_FROM_EMAIL": "Moses Oluwole Portfolio <enquiries@mosesoluwole.com>"

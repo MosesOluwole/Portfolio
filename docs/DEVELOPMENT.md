@@ -95,11 +95,21 @@ Git-connected deploys (Workers Builds) use:
 The canonical domain defaults to `https://mosesoluwole.com` (`src/content/site.ts`);
 set `NEXT_PUBLIC_SITE_URL` only to override it.
 
-Enquiry form (Resend): add `RESEND_API_KEY` (as a secret), `ENQUIRY_TO_EMAIL`
-and `ENQUIRY_FROM_EMAIL` in the Worker's **Settings → Variables and Secrets**.
-No rebuild is needed: the form calls `GET /api/enquiry` when the page loads,
-and switches to direct sending once those are set. The privacy notice is
-rendered per request, so it updates too.
+Enquiry form (Resend): the only required setting is the `RESEND_API_KEY`
+secret. Set it from the project folder so it lands on the right Worker:
+
+```bash
+npx wrangler login
+npx wrangler secret put RESEND_API_KEY
+```
+
+The recipient and sender default to `site.ts` and `wrangler.jsonc` `vars`. The
+sender's domain must be verified in Resend. No rebuild is needed: the form
+calls `GET /api/enquiry` on load. That endpoint returns `{ configured, missing }`,
+listing missing setting names (never values), which is the first thing to
+check if the form falls back to "Send enquiry by email". Delivery failures
+are logged in Workers → Observability as `[enquiry] email provider rejected…`,
+with a hint for 401, 403 and 422 errors.
 
 For local preview of the API, put them in `.dev.vars` (git-ignored).
 
