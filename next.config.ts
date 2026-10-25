@@ -54,11 +54,13 @@ const nextConfig: NextConfig = {
   // site's images are pre-sized, so serve them as-is.
   images: { unoptimized: true },
   async redirects() {
-    return ["wildz", "wheelz", "caxino", "spinz"].map((slug) => ({
-      source: `/work/${slug}`,
-      destination: "/work/casino-platforms",
-      permanent: true,
-    }));
+    return [
+      ...["wildz", "wheelz", "caxino", "spinz"].map((slug) => ({
+        source: `/work/${slug}`,
+        destination: "/work/casino-platforms",
+        permanent: true,
+      })),
+    ];
   },
   async headers() {
     return [

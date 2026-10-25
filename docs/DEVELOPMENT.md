@@ -71,7 +71,16 @@ manual hosting steps (production-only secrets, firewall rule, 2FA).
 ## Deploy (Cloudflare Workers, via OpenNext)
 
 The site runs on Cloudflare Workers through the OpenNext adapter
-(`wrangler.jsonc`, `open-next.config.ts`).
+(`wrangler.jsonc`, `open-next.config.ts`). `cloudflare-worker.js` is the entry
+point: it redirects `http://` and `www.` to `https://mosesoluwole.com`, then
+hands every other request to the Next.js worker. `wrangler.jsonc` attaches
+both domains to the Worker and turns off the `workers.dev` address and
+preview URLs, so none of this depends on dashboard settings.
+
+Note: `npm run preview` emulates the production domain, so on localhost every
+page redirects to `https://mosesoluwole.com`. For local testing, use
+`npm run dev`, or run `wrangler dev` with a copy of `wrangler.jsonc` that has no
+`routes`.
 
 ```bash
 npm run preview   # build and run locally in the Workers runtime (http://localhost:8787)

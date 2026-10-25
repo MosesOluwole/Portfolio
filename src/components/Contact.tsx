@@ -13,7 +13,7 @@ export default function Contact() {
           <h2 id="contact-title" className={s.title}>What are you trying to build?</h2>
           <p className={s.lede}>
             You don&rsquo;t need a technical specification. Tell me what&rsquo;s getting in the way, or what you&rsquo;d
-            like to exist, and I&rsquo;ll come back with honest thoughts on how to approach it.
+            like to build, and I&rsquo;ll come back with honest thoughts on how to approach it.
           </p>
           <ul className={s.direct}>
             {site.email && (

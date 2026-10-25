@@ -78,13 +78,11 @@ client-side validation duplicated server-side.
 ## Manual steps (hosting and accounts): Cloudflare
 
 1. **Secrets:** add the Resend key in the Worker's *Variables and Secrets* as a
-   **Secret** (encrypted), not as plain text. Turn off preview URLs so
-   unfinished builds aren't public.
-2. **workers.dev:** disable the `*.workers.dev` route once the custom domain
-   works. It's an unprotected duplicate of the site.
+   **Secret** (encrypted), not as plain text.
+2. **workers.dev and preview URLs** are disabled in `wrangler.jsonc`;
+   `http://` and `www.` are redirected by `cloudflare-worker.js`.
 3. **Rate limiting:** in Security → WAF → Rate limiting rules, add one rule
    for `POST /api/enquiry`. The free plan allows one rule.
-4. **Always Use HTTPS:** turn it on in SSL/TLS → Edge Certificates.
 5. **Resend:** create a sending-only API key restricted to your domain, and
    verify SPF and DKIM. Rotate the key if it's ever exposed.
 6. **Accounts:** 2FA on Cloudflare, GitHub, Resend and Gmail; protect the
