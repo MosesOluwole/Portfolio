@@ -68,16 +68,34 @@ results, launch checklist and 90-day plan. Service pages live in
 See `docs/SECURITY.md` for the review, accepted risks, tests and the
 manual hosting steps (production-only secrets, firewall rule, 2FA).
 
-## Deploy (Vercel)
+## Deploy (Cloudflare Workers, via OpenNext)
 
-1. Push the folder to a GitHub repository.
-2. Import it at vercel.com/new (framework is detected automatically).
-3. Add environment variables: `NEXT_PUBLIC_SITE_URL` (your final domain,
-   with https://) and, for the form, the three Resend variables. Optional:
-   `NEXT_PUBLIC_ANALYTICS=vercel`.
-4. Deploy, then add your custom domain in Project → Settings → Domains.
+The site runs on Cloudflare Workers through the OpenNext adapter
+(`wrangler.jsonc`, `open-next.config.ts`).
 
-Any Node host works too: `npm run build && npm start`.
+```bash
+npm run preview   # build and run locally in the Workers runtime (http://localhost:8787)
+npm run deploy    # build and deploy (after `npx wrangler login`)
+```
+
+Git-connected deploys (Workers Builds) use:
+- Build command: `npx opennextjs-cloudflare build`
+- Deploy command: `npx opennextjs-cloudflare deploy`
+- Build variable: `NODE_VERSION=22`
+
+The canonical domain defaults to `https://mosesoluwole.com` (`src/content/site.ts`);
+set `NEXT_PUBLIC_SITE_URL` only to override it.
+
+Enquiry form (Resend): add `RESEND_API_KEY`, `ENQUIRY_TO_EMAIL` and
+`ENQUIRY_FROM_EMAIL` in **both** places:
+- the Worker's *Variables and Secrets*, used at runtime to send email
+- the build's *Build variables and secrets*, because the home page is generated
+  at build time and needs to know the form is connected
+
+For local preview of the API, put them in `.dev.vars` (git-ignored).
+
+`@vercel/analytics` is installed but stays off unless `NEXT_PUBLIC_ANALYTICS=vercel`.
+Leave it unset on Cloudflare.
 
 ## Notes
 

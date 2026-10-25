@@ -5,8 +5,7 @@ const isDev = process.env.NODE_ENV !== "production";
 
 /**
  * Content-Security-Policy matched to what the site actually loads:
- * everything is same-origin (fonts are self-hosted by next/font, Vercel
- * Analytics is served from /_vercel/insights on the same domain).
+ * everything is same-origin (fonts are self-hosted by next/font).
  *
  * 'unsafe-inline' for scripts is needed because the site is statically
  * generated: Next.js injects inline bootstrap scripts, and per-request
@@ -51,7 +50,9 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
   outputFileTracingRoot: path.resolve("."),
-  images: { formats: ["image/avif", "image/webp"] },
+  // Image optimisation on Cloudflare needs the paid Images service; the
+  // site's images are pre-sized, so serve them as-is.
+  images: { unoptimized: true },
   async redirects() {
     return ["wildz", "wheelz", "caxino", "spinz"].map((slug) => ({
       source: `/work/${slug}`,

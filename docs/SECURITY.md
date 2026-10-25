@@ -9,8 +9,7 @@ this records what was checked, changed and tested.
 - Next.js 15.5 App Router, statically generated pages, React 19.
 - One server endpoint: `POST /api/enquiry` (sends email via Resend when configured).
 - No database, user accounts, authentication, cookies, file uploads or admin area.
-- No third-party scripts or fonts. Optional Vercel Web Analytics is served
-  same-origin.
+- No third-party scripts or fonts. Hosted on Cloudflare Workers via OpenNext.
 - Secrets: `RESEND_API_KEY`, `ENQUIRY_TO_EMAIL`, `ENQUIRY_FROM_EMAIL`. All are
   server-only (no `NEXT_PUBLIC_` prefix), so none appear in browser bundles.
 
@@ -24,7 +23,7 @@ this records what was checked, changed and tested.
 | Medium | API accepted any content type, unbounded bodies and non-string fields; no origin check | JSON-only (415), 32 KB body cap (413), field allow-list with string type checks (422), same-origin check for browser requests (403), 10 s timeout on the email call |
 | Medium | Name and company fields allowed control characters. The subject line is built from the name, so CR/LF could reach email headers. | Control characters rejected server-side; subject also collapsed to one line |
 | Low | Error logs included the provider's response body | Logs record the status code and error type only |
-| Low | Rate-limit map could grow without bound; client IP taken from a spoofable header first | Map pruned; `x-real-ip` (set by Vercel) preferred |
+| Low | Rate-limit map could grow without bound; client IP taken from a spoofable header first | Map pruned; `cf-connecting-ip` (set by Cloudflare) preferred |
 | Low | No COOP header; narrow Permissions-Policy | `Cross-Origin-Opener-Policy: same-origin`; Permissions-Policy extended |
 | Info | API responses cacheable by default | `Cache-Control: no-store` on `/api/*` |
 
@@ -76,26 +75,23 @@ client-side validation duplicated server-side.
 - **Not tested:** the successful Resend send path. It needs real credentials;
   send one real enquiry after deployment.
 
-## Manual steps (hosting and accounts)
+## Manual steps (hosting and accounts): Cloudflare
 
-1. **Vercel environment variables:** add the three Resend variables to the
-   **Production** environment only. Don't give preview deployments the real
-   key.
-2. **Deployment Protection:** keep Vercel Authentication on for preview
-   deployments, so unfinished builds aren't public.
-3. **Firewall rate limit (recommended):** in Vercel → Firewall, add a rule
-   limiting `POST /api/enquiry`, for example 10 requests per 10 minutes per IP.
-4. **Resend:** create a **sending-only** API key restricted to your domain.
-   Verify SPF and DKIM for the sending domain. Rotate the key if it's ever
-   exposed.
-5. **Accounts:** turn on 2FA for GitHub, Vercel, Resend, your domain
-   registrar and Gmail. Protect the `main` branch on GitHub.
-6. **After deploying:** check the headers at securityheaders.com; send one
-   real enquiry; if analytics is enabled, check the browser console for CSP
-   errors.
-7. **HSTS preload (optional):** only once every subdomain of your domain
-   serves HTTPS. Then add `includeSubDomains; preload` and submit to
-   hstspreload.org.
+1. **Secrets:** add the Resend key in the Worker's *Variables and Secrets* as a
+   **Secret** (encrypted), not as plain text. Turn off preview URLs so
+   unfinished builds aren't public.
+2. **workers.dev:** disable the `*.workers.dev` route once the custom domain
+   works. It's an unprotected duplicate of the site.
+3. **Rate limiting:** in Security → WAF → Rate limiting rules, add one rule
+   for `POST /api/enquiry`. The free plan allows one rule.
+4. **Always Use HTTPS:** turn it on in SSL/TLS → Edge Certificates.
+5. **Resend:** create a sending-only API key restricted to your domain, and
+   verify SPF and DKIM. Rotate the key if it's ever exposed.
+6. **Accounts:** 2FA on Cloudflare, GitHub, Resend and Gmail; protect the
+   `main` branch.
+7. **After deploying:** check the headers at securityheaders.com and send one
+   real enquiry.
+8. **HSTS preload (optional):** only once every subdomain serves HTTPS.
 
 ## Ongoing checklist
 
@@ -103,9 +99,9 @@ client-side validation duplicated server-side.
   React promptly (security fixes ship as patches).
 - Before adding any third-party service: update the CSP, test with
   `CSP_REPORT_ONLY=true`, then enforce.
-- Watch Vercel logs for `[enquiry] rate limit reached` and `honeypot triggered`
+- Watch Workers logs (Observability) for `[enquiry] rate limit reached` and `honeypot triggered`
   spikes. If spam gets through, consider Turnstile.
 - Delete old enquiries from your inbox in line with the privacy notice's
   retention periods.
-- Rotate the Resend key if anyone else gains access to the Vercel project.
+- Rotate the Resend key if anyone else gains access to the Cloudflare account.
 - Re-run this review after adding a database, accounts, uploads or new endpoints.

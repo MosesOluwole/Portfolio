@@ -27,8 +27,13 @@ function rateLimited(ip: string) {
 }
 
 function clientIp(req: Request) {
-  // Vercel sets x-real-ip to the connecting client; x-forwarded-for's first entry is the fallback.
-  return req.headers.get("x-real-ip") || req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  // Cloudflare sets cf-connecting-ip to the real client and overwrites any value a client sends.
+  return (
+    req.headers.get("cf-connecting-ip") ||
+    req.headers.get("x-real-ip") ||
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    "unknown"
+  );
 }
 
 /** Browsers always send Origin on cross-site POSTs; reject anything not from this site. */
@@ -38,7 +43,7 @@ function sameOrigin(req: Request) {
   try {
     const o = new URL(origin).host;
     const allowed = new Set([new URL(siteUrl).host, req.headers.get("host") ?? ""]);
-    if (process.env.VERCEL_URL) allowed.add(process.env.VERCEL_URL);
+    allowed.add(`www.${new URL(siteUrl).host}`);
     return allowed.has(o);
   } catch {
     return false;

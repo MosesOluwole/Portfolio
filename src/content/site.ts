@@ -48,7 +48,7 @@ export const site = {
     /** Where your inbox is hosted (enquiries end up here). */
     emailProvider: "Google (Gmail)",
     /** Where the site is hosted. Change if you don't deploy to Vercel. */
-    hostingProvider: "Vercel",
+    hostingProvider: "Cloudflare",
     /** How long enquiries that don't lead to work are kept. */
     enquiryRetention: "12 months",
     /** How long client records are kept after a project ends (tax and legal records). */
@@ -65,18 +65,12 @@ export const site = {
 /**
  * Canonical origin used for canonical URLs, sitemap, robots.txt, Open Graph
  * and structured data. Set NEXT_PUBLIC_SITE_URL to your real domain
- * (e.g. https://www.mosesoluwole.co.uk). On Vercel, the project's
- * production domain is used automatically if the variable is missing.
+ * only to override the default production domain below.
  */
 function resolveSiteUrl(): string {
   const explicit = process.env.NEXT_PUBLIC_SITE_URL;
   if (explicit) return explicit.replace(/\/$/, "");
-  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL;
-  if (vercel) return `https://${vercel}`;
-  if (process.env.NODE_ENV === "production" && process.env.CI) {
-    console.warn("[seo] NEXT_PUBLIC_SITE_URL is not set: canonical URLs will point to localhost.");
-  }
-  return "http://localhost:3000";
+  return "https://mosesoluwole.com";
 }
 
 export const siteUrl = resolveSiteUrl();
