@@ -95,11 +95,11 @@ Git-connected deploys (Workers Builds) use:
 The canonical domain defaults to `https://mosesoluwole.com` (`src/content/site.ts`);
 set `NEXT_PUBLIC_SITE_URL` only to override it.
 
-Enquiry form (Resend): add `RESEND_API_KEY`, `ENQUIRY_TO_EMAIL` and
-`ENQUIRY_FROM_EMAIL` in **both** places:
-- the Worker's *Variables and Secrets*, used at runtime to send email
-- the build's *Build variables and secrets*, because the home page is generated
-  at build time and needs to know the form is connected
+Enquiry form (Resend): add `RESEND_API_KEY` (as a secret), `ENQUIRY_TO_EMAIL`
+and `ENQUIRY_FROM_EMAIL` in the Worker's **Settings → Variables and Secrets**.
+No rebuild is needed: the form calls `GET /api/enquiry` when the page loads,
+and switches to direct sending once those are set. The privacy notice is
+rendered per request, so it updates too.
 
 For local preview of the API, put them in `.dev.vars` (git-ignored).
 

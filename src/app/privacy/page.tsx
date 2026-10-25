@@ -4,6 +4,10 @@ import { site } from "@/content/site";
 import { enquiryApiConfigured } from "@/lib/enquiry";
 import s from "./privacy.module.css";
 
+// Rendered per request so the "who else handles it" list reflects the
+// runtime configuration (e.g. whether Resend is connected).
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Privacy notice",
   description: `How ${site.name}, a freelance software engineer in London, handles personal information sent through this website and its enquiry form.`,

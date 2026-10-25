@@ -11,13 +11,23 @@ type Status = "idle" | "sending" | "sent" | "error";
 
 const empty: Enquiry = { name: "", email: "", company: "", type: "", budget: "", timeframe: "", description: "" };
 
-export default function EnquiryForm({ mode, email }: { mode: Mode; email: string }) {
+export default function EnquiryForm({ mode: fallbackMode, email }: { mode: Mode; email: string }) {
+  const [mode, setMode] = useState<Mode>(fallbackMode);
   const [values, setValues] = useState<Enquiry>(empty);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
   const statusRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/enquiry", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => { if (!cancelled && d?.configured) setMode("api"); })
+      .catch(() => { /* keep the email fallback */ });
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     const onType = (ev: Event) => {
@@ -73,6 +83,11 @@ export default function EnquiryForm({ mode, email }: { mode: Mode; email: string
         setStatus("sent");
         setMessage("Thanks — your enquiry has been sent. I'll reply to the email address you gave.");
         setValues(empty);
+      } else if (res.status === 503 && email) {
+        // Direct delivery switched off since the page loaded: use the email fallback instead.
+        setMode("mailto");
+        setStatus("error");
+        setMessage("Direct sending isn't available right now. Press the button again to send your enquiry from your email app instead.");
       } else if (res.status === 422 && data.errors) {
         setErrors(data.errors);
         setStatus("idle");

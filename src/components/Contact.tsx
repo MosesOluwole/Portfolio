@@ -1,10 +1,10 @@
 import { site } from "@/content/site";
-import { enquiryApiConfigured } from "@/lib/enquiry";
 import EnquiryForm from "./EnquiryForm";
 import s from "./Contact.module.css";
 
 export default function Contact() {
-  const mode = enquiryApiConfigured() ? "api" : site.email ? "mailto" : "none";
+  // Fallback until the form confirms at runtime that direct delivery is configured.
+  const mode = site.email ? "mailto" : "none";
 
   return (
     <section id="contact" className={`section on-ink ${s.contact}`} aria-labelledby="contact-title">

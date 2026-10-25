@@ -56,6 +56,15 @@ const oneLine = (v: string) => v.replace(/[\r\n\t]+/g, " ").trim();
 
 const FIELDS = ["name", "email", "company", "type", "budget", "timeframe", "description"] as const;
 
+/**
+ * GET → { configured: boolean }. Read at runtime by the form, so connecting
+ * Resend only needs the Worker's runtime variables, not a rebuild.
+ * Reveals nothing beyond whether the form can send directly.
+ */
+export async function GET() {
+  return json({ configured: enquiryApiConfigured() });
+}
+
 export async function POST(req: Request) {
   if (!sameOrigin(req)) return json({ error: "Requests must come from this website." }, 403);
 

@@ -13,7 +13,7 @@ export default function About() {
 
         <div className={s.text}>
           <p className={s.lead}>
-            I&rsquo;m a full-stack software engineer in London, and I&rsquo;ve spent more than {site.yearsExperience}{" "}
+            I&rsquo;m a senior full-stack software engineer in London, and I&rsquo;ve spent more than {site.yearsExperience}{" "}
             years building and looking after software that real businesses depend on.
           </p>
           <p>
