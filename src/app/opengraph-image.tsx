@@ -6,5 +6,5 @@ export const size = ogSize;
 export const contentType = "image/png";
 
 export default function OgImage() {
-  return ogImage({ kicker: "Freelance full-stack developer, London", title: "I build the software your business runs on." });
+  return ogImage({ kicker: "Freelance web developer, London", title: "I build the software your business runs on." });
 }

@@ -44,7 +44,7 @@ claimed**. Targeting is based on intent and on the live results checked on
 
 | Theme | Target page |
 |---|---|
-| freelance full-stack developer London / UK; freelance software developer | `/` |
+| freelance web developer London; freelance full-stack developer London / UK; freelance software developer | `/` |
 | custom web application development; web application developer UK; bespoke business software | `/services/web-application-development` |
 | API development services; freelance backend developer UK; Node.js / Golang / TypeScript developer | `/services/api-development` |
 | MVP development for startups; build an MVP UK | `/services/mvp-development` |
@@ -60,7 +60,7 @@ produce impressions.
 
 | URL | Title | H1 |
 |---|---|---|
-| `/` | Moses Oluwole — Freelance Full-Stack Developer in London, UK | Freelance full-stack software engineer in London / I build the software your business runs on. |
+| `/` | Freelance Web Developer in London \| Moses Oluwole | Freelance full-stack software engineer in London / I build the software your business runs on. |
 | `/services/web-application-development` | Custom Web Application Development, UK | Custom web applications, built around how your business actually works |
 | `/services/api-development` | Backend & API Development, UK | Backend systems and APIs that keep working as you grow |
 | `/services/mvp-development` | MVP Development for Startups and Founders | MVP development: a first version real users can try |

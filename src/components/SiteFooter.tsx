@@ -25,8 +25,8 @@ export default function SiteFooter() {
         <div className={s.brand}>
           <p className={s.mark}>{site.wordmark}</p>
           <p className={s.desc}>
-            Freelance full-stack software engineer in {site.location.split(",")[0]}, building web applications, APIs and
-            business software for clients across the UK.
+            Freelance web developer and full-stack software engineer in {site.location.split(",")[0]}, building web
+            applications, websites, APIs and business software for clients across the UK.
           </p>
         </div>
         <nav aria-label="Footer" className={s.col}>

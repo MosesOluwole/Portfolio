@@ -18,7 +18,7 @@ export function ogImage({ kicker, title, footer }: { kicker: string; title: stri
           <div style={{ fontSize: size, fontWeight: 700, lineHeight: 1, letterSpacing: -3, maxWidth: 1000 }}>{title}</div>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 26, color: "#66655e" }}>
-          <div>{footer ?? "Freelance full-stack software engineer, London"}</div>
+          <div>{footer ?? "Freelance web developer and software engineer, London"}</div>
           <div style={{ width: 160, height: 14, background: "#cdeb2f", border: "2px solid #1d1e1b" }} />
         </div>
       </div>

@@ -56,9 +56,9 @@ export const site = {
   },
 
   seo: {
-    title: "Moses Oluwole — Freelance Full-Stack Developer in London, UK",
+    title: "Freelance Web Developer in London | Moses Oluwole",
     description:
-      "Freelance full-stack software engineer in London with 7+ years' experience, building custom web applications, APIs, MVPs and integrations for UK businesses.",
+      "Freelance web developer and full-stack software engineer in London with 7+ years' experience. Web applications, websites, APIs and MVPs for UK businesses.",
   },
 } as const;
 

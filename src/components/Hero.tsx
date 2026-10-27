@@ -12,7 +12,7 @@ export default function Hero() {
         </p>
 
         <h1 id="hero-title" className={s.title}>
-          <span className={s.kicker}>Freelance full-stack software engineer in London</span>
+          <span className={s.kicker}>Freelance web developer and software engineer in London</span>
           <span className={s.line}><span>I build the software</span></span>
           <span className={s.line}><span>your business</span></span>
           <span className={s.line}><span>runs on.</span></span>
@@ -20,7 +20,7 @@ export default function Hero() {
 
         <div className={s.copy}>
           <p className={s.lede}>
-            Custom web applications, APIs, MVPs and integrations for UK businesses, founders and teams.
+            Web applications, websites, APIs, MVPs and integrations for UK businesses, founders and teams.
           </p>
           <p className={s.body}>
             {site.yearsExperience}+ years of engineering, from sole-developer builds to live commercial platforms.
